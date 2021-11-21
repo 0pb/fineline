@@ -1,0 +1,91 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://body/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://maps/tilemap_heaven.tres" type="TileSet" id=2]
+[ext_resource path="res://body/projectile_shooter.tscn" type="PackedScene" id=3]
+[ext_resource path="res://body/exit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://maps/tilemap_hell.tres" type="TileSet" id=7]
+[ext_resource path="res://maps/hell_bg.tscn" type="PackedScene" id=8]
+[ext_resource path="res://maps/heaven_bg.tscn" type="PackedScene" id=9]
+[ext_resource path="res://maps/Main.tres.gd" type="Script" id=10]
+[ext_resource path="res://body/laser.tscn" type="PackedScene" id=11]
+[ext_resource path="res://body/beam.tscn" type="PackedScene" id=12]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+string_next_level = "res://maps/map_08.tscn"
+time_to_gold = 14.0
+time_to_silver = 16.0
+
+[node name="laser" parent="." instance=ExtResource( 11 )]
+position = Vector2( -952, -350 )
+enable_laser_time = true
+toggle_laser_time = 2.0
+
+[node name="laser2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 414, -440 )
+rotation = -4.71238
+enable_laser_time = true
+toggle_laser_time = 2.0
+
+[node name="laser3" parent="." instance=ExtResource( 11 )]
+position = Vector2( 288, -440 )
+rotation = -4.71238
+enable_laser_time = true
+toggle_laser_time = 2.0
+
+[node name="projectile_shooter" parent="." instance=ExtResource( 3 )]
+position = Vector2( -1328, 32 )
+xMove = 10
+yMove = 0
+bullet_destroy_time = 50
+
+[node name="projectile_shooter2" parent="." instance=ExtResource( 3 )]
+position = Vector2( -1008, -148 )
+xMove = 5
+yMove = 0
+shoot_time = 2.0
+bullet_destroy_time = 50
+
+[node name="heaven" type="TileMap" parent="." groups=["heaven"]]
+tile_set = ExtResource( 2 )
+format = 1
+tile_data = PoolIntArray( -1310720, 2, 0, -1310719, 2, 0, -1310718, 2, 0, -458767, 2, 0, -458766, 2, 0, -458765, 2, 0, -458764, 2, 0, -458763, 2, 0, -458762, 2, 0, -458761, 2, 0, -458760, 2, 0, -458759, 2, 0, -458758, 2, 0, -458757, 2, 0, -458756, 2, 0, -458755, 2, 0, -458754, 2, 0, -458753, 2, 0, -524288, 2, 0, -524287, 2, 0, -524286, 2, 0, -524285, 2, 0, -524284, 2, 0, -524283, 2, 0, -524282, 2, 0, -524281, 2, 0, -393232, 2, 0, -393231, 2, 0, -458745, 2, 0, -458744, 2, 0, -327696, 2, 0, -327691, 2, 0, -327690, 2, 0, -327689, 2, 0, -327688, 2, 0, -327687, 2, 0, -327686, 2, 0, -327685, 2, 0, -327684, 2, 0, -327683, 2, 0, -327682, 2, 0, -327681, 2, 0, -393216, 2, 0, -393215, 2, 0, -393208, 2, 0, -262166, 2, 0, -262165, 2, 0, -262164, 2, 0, -262163, 2, 0, -262162, 2, 0, -262161, 2, 0, -262160, 2, 0, -262159, 2, 0, -327679, 2, 0, -327672, 2, 0, -196630, 2, 0, -196625, 2, 0, -196624, 2, 0, -196623, 2, 0, -262143, 2, 0, -262136, 2, 0, -131094, 2, 0, -131089, 2, 0, -196607, 2, 0, -196600, 2, 0, -65558, 2, 0, -65555, 2, 0, -65554, 2, 0, -65553, 2, 0, -65552, 2, 0, -65551, 2, 0, -65550, 2, 0, -65549, 2, 0, -65548, 2, 0, -65547, 2, 0, -65546, 2, 0, -65545, 2, 0, -65544, 2, 0, -65543, 2, 0, -65542, 2, 0, -65541, 2, 0, -65540, 2, 0, -65539, 2, 0, -131071, 2, 0, -131065, 2, 0, -131064, 2, 0, -131063, 2, 0, -131062, 2, 0, -131061, 2, 0, -22, 2, 0, -10, 2, 0, -8, 1, 0, -3, 2, 0, -65535, 2, 0, -65525, 2, 0, 65514, 2, 0, 65526, 2, 0, 65528, 1, 0, 1, 2, 0, 11, 2, 0, 131050, 2, 0, 131051, 2, 0, 131052, 2, 0, 131053, 2, 0, 131054, 2, 0, 131055, 2, 0, 131056, 2, 0, 131057, 2, 0, 131058, 2, 0, 131059, 2, 0, 131060, 2, 0, 131061, 2, 0, 131062, 2, 0, 131063, 2, 0, 131064, 2, 0, 131065, 2, 0, 131066, 2, 0, 131067, 2, 0, 131068, 2, 0, 131069, 2, 0, 131070, 2, 0, 131071, 2, 0, 65536, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 65541, 2, 0, 65542, 2, 0, 65543, 2, 0, 65544, 2, 0, 65545, 2, 0, 65546, 2, 0, 65547, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hell" type="TileMap" parent="." groups=["hell"]]
+tile_set = ExtResource( 7 )
+format = 1
+tile_data = PoolIntArray( -1310720, 2, 0, -1310719, 2, 0, -1310718, 2, 0, -458767, 2, 0, -458766, 2, 0, -458765, 2, 0, -458764, 2, 0, -458763, 2, 0, -458762, 2, 0, -458761, 2, 0, -458760, 2, 0, -458759, 2, 0, -458758, 2, 0, -458757, 2, 0, -458756, 2, 0, -458755, 2, 0, -458754, 2, 0, -458753, 2, 0, -524288, 2, 0, -524287, 2, 0, -524286, 2, 0, -524285, 2, 0, -524284, 2, 0, -524283, 2, 0, -524282, 2, 0, -524281, 2, 0, -393232, 2, 0, -393231, 2, 0, -458745, 2, 0, -458744, 2, 0, -327696, 2, 0, -327691, 2, 0, -327690, 2, 0, -327689, 2, 0, -327688, 2, 0, -327687, 2, 0, -327686, 2, 0, -327685, 2, 0, -327684, 2, 0, -327683, 2, 0, -327682, 2, 0, -327681, 2, 0, -393216, 2, 0, -393215, 2, 0, -393208, 2, 0, -262166, 2, 0, -262165, 2, 0, -262164, 2, 0, -262163, 2, 0, -262162, 2, 0, -262161, 2, 0, -262160, 2, 0, -262159, 2, 0, -327679, 2, 0, -327672, 2, 0, -196630, 2, 0, -196625, 2, 0, -196624, 2, 0, -196623, 2, 0, -262143, 2, 0, -262136, 2, 0, -131094, 2, 0, -131089, 2, 0, -196607, 2, 0, -196600, 2, 0, -65558, 2, 0, -65555, 2, 0, -65554, 2, 0, -65553, 2, 0, -65552, 2, 0, -65551, 2, 0, -65550, 2, 0, -65549, 2, 0, -65548, 2, 0, -65547, 2, 0, -65546, 2, 0, -65545, 2, 0, -65544, 2, 0, -65543, 2, 0, -65542, 2, 0, -65541, 2, 0, -65540, 2, 0, -65539, 2, 0, -131071, 2, 0, -131065, 2, 0, -131064, 2, 0, -131063, 2, 0, -131062, 2, 0, -131061, 2, 0, -22, 2, 0, -10, 1, 0, -8, 2, 0, -3, 2, 0, -65535, 2, 0, -65525, 2, 0, 65514, 2, 0, 65526, 1, 0, 65528, 2, 0, 1, 2, 0, 11, 2, 0, 131050, 2, 0, 131051, 2, 0, 131052, 2, 0, 131053, 2, 0, 131054, 2, 0, 131055, 2, 0, 131056, 2, 0, 131057, 2, 0, 131058, 2, 0, 131059, 2, 0, 131060, 2, 0, 131061, 2, 0, 131062, 2, 0, 131063, 2, 0, 131064, 2, 0, 131065, 2, 0, 131066, 2, 0, 131067, 2, 0, 131068, 2, 0, 131069, 2, 0, 131070, 2, 0, 131071, 2, 0, 65536, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 65541, 2, 0, 65542, 2, 0, 65543, 2, 0, 65544, 2, 0, 65545, 2, 0, 65546, 2, 0, 65547, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1168, -195 )
+
+[node name="exit" parent="." instance=ExtResource( 5 )]
+position = Vector2( 640, 17 )
+true_if_activated = true
+
+[node name="heaven_bg" parent="." instance=ExtResource( 9 )]
+
+[node name="hell_bg" parent="." instance=ExtResource( 8 )]
+
+[node name="beam" parent="." instance=ExtResource( 12 )]
+position = Vector2( -792, -272 )
+scale = Vector2( 1.69224, 3.70906 )
+
+[node name="beam2" parent="." instance=ExtResource( 12 )]
+position = Vector2( -32, -88 )
+scale = Vector2( 1.69224, 3.70906 )
+
+[node name="beam3" parent="." instance=ExtResource( 12 )]
+position = Vector2( 288, -136 )
+scale = Vector2( 5.02823, 6.95906 )
+new_gravity = -1

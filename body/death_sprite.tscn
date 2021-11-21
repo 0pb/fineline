@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/char_death.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Sprite
+
+
+func _physics_process(_delta):
+    var cast_point
+    if $RayCast2D.is_colliding():
+        cast_point = $RayCast2D.get_collision_point()
+        global_position = cast_point
+        set_physics_process(false)
+"
+
+[node name="death_sprite" type="Sprite"]
+modulate = Color( 1, 1, 1, 0.552941 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 10, 60, 60 )
+script = SubResource( 1 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, 1000 )
+collision_mask = 255

@@ -1,0 +1,289 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://assets/char.png" type="Texture" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/PauseMenu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://body/vignette.tscn" type="PackedScene" id=5]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends KinematicBody2D
+
+
+onready var raycast_crate = get_node(\"raycast_crate\")
+onready var raycast_crate2 = get_node(\"raycast_crate2\")
+onready var current_sprite = get_node(\"animation\")
+onready var node_particle = get_node(\"runningparticle\")
+
+
+const JUMP_FORCE = 550
+const SPEED = 300
+const ACCEL = 0.4
+var GRAVITY = 35
+var velocity := Vector2.ZERO
+var current_pulling_box = null
+var true_if_pulling = false
+var stop_moving = false
+
+
+func _ready():
+    $start_process.connect(\"body_entered\", self, \"_on_crate_in_range\")
+
+
+func _on_crate_in_range(body):
+    body.set_physics_process(true)
+
+
+func _unhandled_input(event):
+    if event.is_action_pressed(\"jump\") and is_on_floor():
+        velocity.y = -JUMP_FORCE
+    if event.is_action_pressed(\"pulling\"):
+        true_if_pulling = true
+    if event.is_action_released(\"pulling\"):
+        true_if_pulling = false
+        current_pulling_box = null
+
+
+func _physics_process_input():
+    if is_on_floor():
+        velocity.y = -JUMP_FORCE
+
+
+func gravity():
+    velocity.y += GRAVITY
+
+
+func _move(direction):
+    #velocity.y += GRAVITY
+
+    if stop_moving == false:
+        if true_if_pulling:
+            velocity.x = lerp(velocity.x, SPEED * direction * 0.5, ACCEL)
+        else:
+            velocity.x = lerp(velocity.x, SPEED * direction, ACCEL)
+    else:
+        velocity.x = 0
+#    velocity = velocity.move_toward(special_vect * MAX_SPEED, ACCELERATION * delta)
+#    velocity = velocity.move_toward(Vector2(1, 0) * direction * SPEED, ACCEL * 5)
+    
+    #velocity = move_and_slide(velocity, Vector2.UP)
+    if raycast_crate.is_colliding() or (true_if_pulling and raycast_crate2.is_colliding()):
+        check_box_collision(direction)
+    
+
+func _process(delta):
+    if transform.origin.y > 1200:
+        #get_tree().reload_current_scene()
+        AutoloadControl.player_death()
+
+var false_if_dead = true
+func _physics_process(_delta):
+    if false_if_dead:
+        var direction = Input.get_action_strength(\"ui_right\") - Input.get_action_strength(\"ui_left\")
+
+        gravity()
+        if OS.get_name() != \"Android\" and !AutoloadControl.detect_android_on_html:
+            player_sprite_animate(direction)
+            _move(direction)
+        velocity = move_and_slide(velocity, Vector2.UP)
+
+
+func player_sprite_animate(direction):
+    if direction != 0:
+        current_sprite.scale.x = -direction
+        raycast_crate.scale.x = direction
+        raycast_crate2.scale.x = direction
+    
+    if is_on_floor() and direction:
+        current_sprite.play(\"run\")
+        node_particle.emitting = true
+    else:
+        node_particle.emitting = false
+        current_sprite.play(\"idle\")
+    if not is_on_floor():
+        node_particle.emitting = false
+        current_sprite.play(\"jump\")
+
+
+func check_box_collision(direction):
+    var box = raycast_crate.get_collider()
+    if box and box.is_in_group(\"box\"):
+        current_pulling_box = box
+        box.push(Vector2(1, 0) * sign(direction))
+    elif true_if_pulling: 
+        box = raycast_crate2.get_collider()
+        if box and box.is_in_group(\"box\"):
+            current_pulling_box = box
+            box.push(Vector2(1, 0) * sign(direction))
+
+
+
+func _on_death_player_timeout():
+    AutoloadControl.level_restart()
+    #print(\"awd9awd9di0aw\")
+    pass # Replace with function body.
+"
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.652174, 0.991525 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=3]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 384, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 448, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "run",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 12, 24.5 )
+
+[sub_resource type="CircleShape2D" id=14]
+radius = 623.722
+
+[node name="player" type="KinematicBody2D" groups=["player"]]
+collision_layer = 3
+collision_mask = 3
+script = SubResource( 1 )
+
+[node name="runningparticle" type="CPUParticles2D" parent="."]
+position = Vector2( 0, 31 )
+lifetime = 0.6
+lifetime_randomness = 0.8
+local_coords = false
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 3.0
+scale_amount = 6.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 2 )
+color_ramp = SubResource( 3 )
+
+[node name="death_particle" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 50
+lifetime = 1.5
+one_shot = true
+speed_scale = 4.62
+explosiveness = 0.93
+lifetime_randomness = 0.8
+local_coords = false
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 40.0
+scale_amount = 14.85
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 2 )
+color_ramp = SubResource( 3 )
+
+[node name="animation" type="AnimatedSprite" parent="."]
+position = Vector2( 0, 10 )
+frames = SubResource( 12 )
+animation = "run"
+speed_scale = 4.0
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 7.5 )
+shape = SubResource( 13 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+process_mode = 0
+smoothing_enabled = true
+
+[node name="raycast_crate" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 20, 0 )
+collision_mask = 3
+
+[node name="raycast_crate2" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( -30, 0 )
+collision_mask = 3
+
+[node name="PauseMenu" parent="." instance=ExtResource( 2 )]
+
+[node name="VirtualController" parent="PauseMenu" index="0"]
+visible = true
+
+[node name="OptionsPanel" parent="PauseMenu/Pause/PauseFront" index="1"]
+visible = true
+
+[node name="vignette" parent="." instance=ExtResource( 5 )]
+
+[node name="start_process" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="start_process"]
+shape = SubResource( 14 )
+
+[node name="death_player" type="Timer" parent="."]
+pause_mode = 2
+wait_time = 1.5
+one_shot = true
+
+[connection signal="pressed" from="PauseMenu/VirtualController/PauseBtn" to="PauseMenu/VirtualController" method="_on_PauseBtn_pressed"]
+[connection signal="pressed" from="PauseMenu/Pause/PauseFront/OptionsPanel/OptionsBackBtn" to="PauseMenu/Pause" method="_on_OptionsBackBtn_pressed"]
+[connection signal="toggled" from="PauseMenu/Pause/PauseFront/OptionsPanel/CheckFullscreen" to="PauseMenu/Pause" method="_on_CheckFullscreen_toggled"]
+[connection signal="pressed" from="PauseMenu/Pause/PauseFront/Credits/CreditsBackBtn" to="PauseMenu/Pause" method="_on_CreditsBackBtn_pressed"]
+[connection signal="timeout" from="death_player" to="." method="_on_death_player_timeout"]
+
+[editable path="PauseMenu"]
+[editable path="PauseMenu/VirtualController"]
+[editable path="PauseMenu/Pause/PauseFront/OptionsPanel"]
+[editable path="PauseMenu/Pause/PauseFront/Credits"]

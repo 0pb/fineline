@@ -1,0 +1,209 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://body/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://maps/tilemap_heaven.tres" type="TileSet" id=2]
+[ext_resource path="res://body/spike.tscn" type="PackedScene" id=3]
+[ext_resource path="res://body/beam.tscn" type="PackedScene" id=4]
+[ext_resource path="res://body/exit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://body/laser.tscn" type="PackedScene" id=6]
+[ext_resource path="res://maps/tilemap_hell.tres" type="TileSet" id=7]
+[ext_resource path="res://maps/hell_bg.tscn" type="PackedScene" id=8]
+[ext_resource path="res://maps/heaven_bg.tscn" type="PackedScene" id=9]
+[ext_resource path="res://maps/Main.tres.gd" type="Script" id=10]
+[ext_resource path="res://body/crate.tscn" type="PackedScene" id=11]
+[ext_resource path="res://body/door.tscn" type="PackedScene" id=12]
+[ext_resource path="res://body/pressure_plate.tscn" type="PackedScene" id=13]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+string_next_level = "res://maps/ending.tscn"
+time_to_gold = 40.0
+time_to_silver = 120.0
+
+[node name="heaven" type="TileMap" parent="." groups=["heaven"]]
+tile_set = ExtResource( 2 )
+format = 1
+tile_data = PoolIntArray( -851964, 2, 0, -851963, 2, 0, -851962, 2, 0, -851961, 2, 0, -851960, 2, 0, -851959, 2, 0, -851958, 2, 0, -851957, 2, 0, -851956, 2, 0, -786428, 2, 0, -786420, 2, 0, -720892, 2, 0, -720884, 2, 0, -589828, 1, 0, -589827, 1, 0, -589826, 1, 0, -589825, 1, 0, -655360, 1, 0, -655359, 1, 0, -655358, 2, 0, -655357, 2, 0, -655356, 2, 0, -655348, 2, 0, -524292, 1, 0, -589823, 1, 0, -589812, 2, 0, -458756, 1, 0, -524287, 1, 0, -524279, 2, 0, -524278, 2, 0, -524277, 2, 0, -524276, 2, 0, -393220, 1, 0, -458751, 1, 0, -327684, 1, 0, -393215, 1, 0, -262148, 1, 0, -327679, 1, 0, -327674, 1, 0, -327673, 1, 0, -327672, 1, 0, -327671, 1, 0, -327670, 1, 0, -196612, 1, 0, -196611, 1, 0, -196610, 1, 0, -196609, 1, 0, -262144, 1, 0, -262143, 1, 0, -262142, 1, 0, -196605, 2, 0, -196604, 2, 0, -196603, 2, 0, -196602, 2, 0, -196601, 2, 0, -196600, 2, 0, -196599, 2, 0, -196598, 2, 0, -196597, 2, 0, -196596, 2, 0, -196595, 2, 0, -196594, 2, 0, -65542, 2, 0, -65541, 2, 0, -65540, 2, 0, -65539, 2, 0, -65538, 2, 0, -65537, 2, 0, -131069, 2, 0, -131067, 2, 0, -131064, 2, 0, -131061, 2, 0, -131058, 2, 0, -6, 2, 0, -1, 2, 0, -65533, 2, 0, 65530, 2, 0, 65535, 2, 0, 3, 2, 0, 131066, 2, 0, 131071, 2, 0, 65539, 2, 0, 196602, 2, 0, 196603, 2, 0, 196604, 2, 0, 196605, 2, 0, 196606, 2, 0, 196607, 2, 0, 131072, 2, 0, 131073, 2, 0, 131074, 1, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 131082, 2, 0, 131083, 2, 0, 131084, 2, 0, 262142, 1, 0, 196609, 2, 0, 196611, 2, 0, 196612, 2, 0, 196613, 2, 0, 196614, 2, 0, 196615, 2, 0, 196616, 2, 0, 196617, 2, 0, 196618, 2, 0, 196619, 2, 0, 327678, 1, 0, 262145, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 2, 0, 262150, 2, 0, 262151, 2, 0, 262152, 2, 0, 262153, 2, 0, 262154, 2, 0, 262155, 2, 0, 393214, 1, 0, 393215, 1, 0, 327680, 1, 0, 327681, 2, 0, 393217, 2, 0, 393218, 2, 0, 393219, 2, 0, 393220, 2, 0, 393222, 2, 0, 393223, 2, 0, 393224, 2, 0, 393226, 2, 0, 393227, 2, 0, 393228, 2, 0, 393231, 2, 0, 393232, 2, 0, 458756, 2, 0, 458758, 2, 0, 458760, 2, 0, 458762, 2, 0, 458764, 2, 0, 458767, 2, 0, 524292, 2, 0, 524293, 2, 0, 524294, 2, 0, 524296, 2, 0, 524297, 2, 0, 524298, 2, 0, 524300, 2, 0, 524301, 2, 0, 524302, 2, 0, 524303, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="spike_hell" parent="." groups=["hell"] instance=ExtResource( 3 )]
+position = Vector2( 32, 296 )
+
+[node name="spike_hell2" parent="." groups=["hell"] instance=ExtResource( 3 )]
+position = Vector2( -32, 296 )
+
+[node name="traps" type="Node2D" parent="."]
+
+[node name="spike" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 352, 488 )
+
+[node name="spike2" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 608, 488 )
+
+[node name="spike3" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 864, 488 )
+
+[node name="spike4" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 928, 488 )
+
+[node name="spike5" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 992, 488 )
+in_hell = true
+
+[node name="spike6" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 416, -344 )
+in_hell = true
+
+[node name="spike7" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 480, -344 )
+in_hell = true
+
+[node name="spike8" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 544, -344 )
+in_hell = true
+
+[node name="spike9" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 608, -344 )
+in_hell = true
+
+[node name="spike10" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 672, -344 )
+in_hell = true
+
+[node name="spike16" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 288, 104 )
+in_hell = true
+
+[node name="spike17" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 352, 104 )
+in_hell = true
+
+[node name="spike18" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 416, 104 )
+in_hell = true
+
+[node name="spike19" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 480, 104 )
+in_hell = true
+
+[node name="spike20" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 544, 104 )
+in_hell = true
+
+[node name="spike21" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 608, 104 )
+in_hell = true
+
+[node name="spike22" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 672, 104 )
+in_hell = true
+
+[node name="spike23" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 736, 104 )
+in_hell = true
+
+[node name="spike24" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 800, 104 )
+in_hell = true
+
+[node name="spike25" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 864, 104 )
+in_hell = true
+
+[node name="spike26" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 928, 104 )
+in_hell = true
+
+[node name="spike11" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 416, -608 )
+rotation = 3.14159
+in_heaven = true
+
+[node name="spike12" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 480, -608 )
+rotation = 3.14159
+in_heaven = true
+
+[node name="spike13" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 544, -608 )
+rotation = 3.14159
+in_heaven = true
+
+[node name="spike14" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 608, -608 )
+rotation = 3.14159
+in_heaven = true
+
+[node name="spike15" parent="traps" instance=ExtResource( 3 )]
+position = Vector2( 672, -608 )
+rotation = 3.14159
+in_heaven = true
+
+[node name="beam" parent="." instance=ExtResource( 4 )]
+position = Vector2( 536, -384 )
+scale = Vector2( 1, 7 )
+in_heaven = true
+
+[node name="beam2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 1024, 8 )
+scale = Vector2( 1.74871, 11.8285 )
+in_heaven = true
+
+[node name="hell" type="TileMap" parent="." groups=["hell"]]
+tile_set = ExtResource( 7 )
+format = 1
+tile_data = PoolIntArray( -851964, 1, 0, -851963, 1, 0, -851962, 1, 0, -851961, 1, 0, -851960, 1, 0, -851959, 1, 0, -851958, 1, 0, -851957, 1, 0, -851956, 1, 0, -786428, 1, 0, -786420, 1, 0, -720892, 1, 0, -720884, 1, 0, -589828, 2, 0, -589827, 2, 0, -589826, 2, 0, -589825, 2, 0, -655360, 2, 0, -655359, 2, 0, -655358, 1, 0, -655357, 1, 0, -655356, 1, 0, -655348, 1, 0, -524292, 2, 0, -589823, 1, 0, -589812, 1, 0, -458756, 2, 0, -524287, 1, 0, -524279, 2, 0, -524278, 2, 0, -524277, 2, 0, -524276, 2, 0, -393220, 2, 0, -458751, 1, 0, -327684, 2, 0, -393215, 1, 0, -262148, 2, 0, -327679, 1, 0, -327674, 2, 0, -327673, 2, 0, -327672, 2, 0, -327671, 2, 0, -327670, 2, 0, -196612, 2, 0, -196611, 2, 0, -196610, 2, 0, -196609, 2, 0, -262144, 2, 0, -262143, 2, 0, -262142, 2, 0, -196605, 2, 0, -196604, 1, 0, -196603, 1, 0, -196602, 1, 0, -196601, 2, 0, -196600, 1, 0, -196599, 1, 0, -196598, 1, 0, -196597, 1, 0, -196596, 1, 0, -196595, 1, 0, -196594, 1, 0, -65542, 1, 0, -65541, 1, 0, -65540, 1, 0, -65539, 1, 0, -65538, 1, 0, -65537, 1, 0, -131069, 2, 0, -131067, 1, 0, -131064, 1, 0, -131061, 1, 0, -131058, 1, 0, -6, 2, 0, -1, 1, 0, -65533, 2, 0, 65530, 2, 0, 65535, 1, 0, 3, 2, 0, 131066, 2, 0, 131071, 1, 0, 65539, 2, 0, 196602, 2, 0, 196603, 2, 0, 196604, 2, 0, 196605, 2, 0, 196606, 2, 0, 196607, 1, 0, 131072, 1, 0, 131073, 2, 0, 131074, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 131082, 2, 0, 131083, 2, 0, 131084, 2, 0, 131085, 2, 0, 131086, 2, 0, 262142, 2, 0, 196609, 2, 0, 196611, 1, 0, 196612, 1, 0, 196613, 1, 0, 196614, 1, 0, 196615, 1, 0, 196616, 1, 0, 196617, 1, 0, 196618, 1, 0, 196619, 1, 0, 327678, 2, 0, 262145, 2, 0, 262147, 1, 0, 262148, 1, 0, 262149, 1, 0, 262150, 1, 0, 262151, 1, 0, 262152, 1, 0, 262153, 1, 0, 262154, 1, 0, 262155, 1, 0, 393214, 2, 0, 393215, 2, 0, 327680, 2, 0, 327681, 2, 0, 393217, 2, 0, 393218, 2, 0, 393219, 2, 0, 393220, 2, 0, 393222, 2, 0, 393223, 2, 0, 393224, 2, 0, 393226, 2, 0, 393227, 2, 0, 393228, 2, 0, 393231, 1, 0, 393232, 2, 0, 458756, 2, 0, 458758, 2, 0, 458760, 2, 0, 458762, 2, 0, 458764, 2, 0, 458767, 1, 0, 458768, 2, 0, 524292, 2, 0, 524293, 2, 0, 524294, 2, 0, 524296, 2, 0, 524297, 2, 0, 524298, 2, 0, 524300, 2, 0, 524301, 2, 0, 524302, 2, 0, 524303, 2, 0, 524304, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -224, 64 )
+
+[node name="crate" parent="." instance=ExtResource( 11 )]
+position = Vector2( 611, -549 )
+
+[node name="door" parent="." instance=ExtResource( 12 )]
+position = Vector2( 96, -416 )
+scale = Vector2( 1, 5 )
+
+[node name="pressure_plate" parent="." instance=ExtResource( 13 )]
+position = Vector2( 224, -184 )
+node_path_wanted = NodePath("../door")
+
+[node name="exit" parent="." instance=ExtResource( 5 )]
+position = Vector2( -72, -288 )
+true_if_activated = true
+
+[node name="heaven_bg" parent="." instance=ExtResource( 9 )]
+
+[node name="hell_bg" parent="." instance=ExtResource( 8 )]
+
+[node name="laser_hell" parent="." groups=["hell"] instance=ExtResource( 6 )]
+position = Vector2( 680, 200 )
+rotation = 1.5708
+enable_laser_time = true
+toggle_laser_time = 0.75
+
+[node name="laser_hell2" parent="." groups=["hell"] instance=ExtResource( 6 )]
+position = Vector2( 392, 200 )
+rotation = 1.5708
+enable_laser_time = true
+toggle_laser_time = 0.75
+
+[node name="laser_hell3" parent="." instance=ExtResource( 6 )]
+position = Vector2( -160, -56 )
+rotation = 1.5708
+enable_laser_time = true
+toggle_laser_time = 0.75
+
+[node name="laser_hell4" parent="." instance=ExtResource( 6 )]
+position = Vector2( 160, -176 )
+rotation = 1.5708
+enable_laser_time = true
+toggle_laser_time = 0.75

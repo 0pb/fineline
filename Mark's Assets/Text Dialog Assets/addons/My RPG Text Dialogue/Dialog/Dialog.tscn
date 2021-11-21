@@ -1,0 +1,89 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Mark's Assets/Text Dialog Assets/addons/My RPG Text Dialogue/Dialog/Dialog.gd" type="Script" id=1]
+
+[sub_resource type="Animation" id=1]
+resource_name = "New Anim"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[sub_resource type="Animation" id=2]
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[node name="Dialog" type="Control"]
+margin_right = 312.0
+margin_bottom = 291.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_right = 312.0
+margin_bottom = 291.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_right = 50.0
+margin_bottom = 59.0
+bbcode_enabled = true
+visible_characters = 0
+percent_visible = 0.0
+tab_size = 0
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RichTextLabel"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="."]
+margin_bottom = 34.0
+percent_visible = 0.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.001
+autostart = true
+__meta__ = {
+"_editor_description_": "This will be removed from the next commit, it's no longer in use."
+}
+
+[connection signal="animation_finished" from="RichTextLabel/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished_RichTextLabel"]
+[connection signal="animation_started" from="RichTextLabel/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_started_RichTextLabel"]

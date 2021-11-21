@@ -1,0 +1,183 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Virtual Controls for Phone/UI/VirtualController.gd" type="Script" id=2]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow2.tres" type="Theme" id=3]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AAhaWow-2O1K8.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 4 )
+
+[node name="VirtualController" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="PauseBtn" type="Button" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.392157 )
+margin_left = 34.0
+margin_top = 17.0
+margin_right = 245.0
+margin_bottom = 111.0
+theme = ExtResource( 3 )
+text = "Pause"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "It has no signal pressed added in this scene. But other scene that uses this scene has added a signal from PauseBtn to VritualController script in editable children of scene PauseMenu.tscn."
+}
+
+[node name="InvertBtn" type="Button" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.392157 )
+margin_left = 664.0
+margin_top = 508.0
+margin_right = 811.0
+margin_bottom = 573.0
+theme = ExtResource( 3 )
+text = "Invert"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "It has no signal pressed added in this scene. But other scene that uses this scene has added a signal from PauseBtn to VritualController script in editable children of scene PauseMenu.tscn."
+}
+
+[node name="PullBtn" type="Button" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.392157 )
+margin_left = 844.513
+margin_top = 411.812
+margin_right = 990.513
+margin_bottom = 476.812
+theme = ExtResource( 3 )
+text = "Pull"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "It has no signal pressed added in this scene. But other scene that uses this scene has added a signal from PauseBtn to VritualController script in editable children of scene PauseMenu.tscn."
+}
+
+[node name="JumpBtn" type="Button" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.392157 )
+margin_left = 844.513
+margin_top = 506.643
+margin_right = 991.513
+margin_bottom = 571.643
+theme = ExtResource( 3 )
+text = "Jump"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "It has no signal pressed added in this scene. But other scene that uses this scene has added a signal from PauseBtn to VritualController script in editable children of scene PauseMenu.tscn."
+}
+
+[node name="RightBtn" type="Button" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.392157 )
+margin_left = 165.458
+margin_top = 428.605
+margin_right = 286.458
+margin_bottom = 578.605
+theme = ExtResource( 3 )
+text = "Right"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "It has no signal pressed added in this scene. But other scene that uses this scene has added a signal from PauseBtn to VritualController script in editable children of scene PauseMenu.tscn."
+}
+
+[node name="LeftBtn" type="Button" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.392157 )
+margin_left = 37.1269
+margin_top = 426.229
+margin_right = 158.127
+margin_bottom = 576.229
+theme = ExtResource( 3 )
+text = "Left"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "It has no signal pressed added in this scene. But other scene that uses this scene has added a signal from PauseBtn to VritualController script in editable children of scene PauseMenu.tscn."
+}
+
+[node name="Control" type="Control" parent="."]
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 513.0
+margin_bottom = 301.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 16.2122
+margin_top = 154.631
+margin_right = 179.212
+margin_bottom = 219.631
+custom_fonts/font = SubResource( 1 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 19.9919
+margin_top = 219.732
+margin_right = 182.992
+margin_bottom = 284.732
+custom_fonts/font = SubResource( 1 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 19.4722
+margin_top = 287.613
+margin_right = 182.472
+margin_bottom = 352.613
+custom_fonts/font = SubResource( 1 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" type="Label" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 19.4722
+margin_top = 356.909
+margin_right = 182.472
+margin_bottom = 421.909
+custom_fonts/font = SubResource( 1 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label5" type="Label" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 19.4722
+margin_top = 418.748
+margin_right = 182.472
+margin_bottom = 483.748
+custom_fonts/font = SubResource( 1 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label6" type="Label" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+margin_left = 20.8864
+margin_top = 479.559
+margin_right = 183.886
+margin_bottom = 544.559
+custom_fonts/font = SubResource( 1 )
+text = "TEST"
+__meta__ = {
+"_edit_use_anchors_": false
+}

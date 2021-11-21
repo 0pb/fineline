@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends CanvasLayer
+
+
+signal end_fadein
+
+
+onready var tween_in = get_node(\"fade_in\")
+onready var tween_out = get_node(\"fade_out\")
+onready var tween_in_sound = get_node(\"fade_in_sound\")
+onready var tween_out_sound = get_node(\"fade_out_sound\")
+
+
+export var transition_duration = 0.6
+export var transition_type = 3 # TRANS_SINE
+
+
+func update_signal(node):
+	connect(\"end_fadein\", node, \"_on_endfadein\")
+	pass
+
+
+func fadein():
+    tween_in.interpolate_property($ColorRect, \"color\", Color(0, 0, 0, 0), Color(0, 0, 0, 1), transition_duration / 2.0, transition_type, Tween.EASE_OUT, 0)
+    tween_in.start()
+func fadeout():
+    tween_out.interpolate_property($ColorRect, \"color\", Color(0, 0, 0, 1), Color(0, 0, 0, 0), transition_duration, transition_type, Tween.EASE_OUT, 0)
+    tween_out.start()
+
+func _on_fade_in_tween_completed(object, key):
+	emit_signal(\"end_fadein\")
+	fadeout()
+
+
+var value_db = -6.0
+func fadein_sound():
+    value_db = theaven.volume_db
+    tween_in_sound.interpolate_property(theaven, \"volume_db\", theaven.volume_db, -40, transition_duration / 2.0, transition_type, Tween.EASE_OUT, 0)
+    tween_in_sound.interpolate_property(thell, \"volume_db\", theaven.volume_db, -40, transition_duration / 2.0, transition_type, Tween.EASE_OUT, 0)
+    tween_in_sound.start()
+func fadeout_sound():
+    tween_out_sound.interpolate_property(theaven, \"volume_db\", -40, value_db, transition_duration, transition_type, Tween.EASE_OUT, 0)
+    tween_out_sound.interpolate_property(thell, \"volume_db\", -40, value_db, transition_duration, transition_type, Tween.EASE_OUT, 0)
+    tween_out_sound.start()
+
+func _on_fade_in_sound_tween_completed(object, key):
+    fadeout_sound()
+"
+
+[node name="fadeinout" type="CanvasLayer"]
+script = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fade_in" type="Tween" parent="."]
+
+[node name="fade_in_sound" type="Tween" parent="."]
+
+[node name="fade_out_sound" type="Tween" parent="."]
+
+[node name="fade_out" type="Tween" parent="."]
+
+[connection signal="tween_completed" from="fade_in" to="." method="_on_fade_in_tween_completed"]
+[connection signal="tween_completed" from="fade_in_sound" to="." method="_on_fade_in_sound_tween_completed"]

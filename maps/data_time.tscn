@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+
+var dict_timing_medal = {}
+
+
+func _ready():
+    pass
+"
+
+[node name="data_time" type="Node"]
+script = SubResource( 1 )

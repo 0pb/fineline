@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+
+var positions = [] setget _on_new_position
+
+func _on_new_position(new_value):
+    positions = new_value
+    # max body count to avoid lagging
+    if positions.size() > 10:
+        positions.pop_front()
+"
+
+[node name="deaths_pos" type="Node"]
+script = SubResource( 1 )

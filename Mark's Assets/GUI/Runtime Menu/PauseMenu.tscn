@@ -1,0 +1,290 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/Pause.gd" type="Script" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/Credits.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow2.tres" type="Theme" id=3]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow1.tres" type="Theme" id=4]
+[ext_resource path="res://Mark's Assets/GUI/Configuration System/OptionsPanel.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/PauseMenuButtonPressed.tres" type="StyleBox" id=7]
+[ext_resource path="res://Mark's Assets/GUI/Virtual Controls for Phone/UI/VirtualController.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+// Background Noise
+
+uniform mat2 _rot = mat2( vec2(0.5, 0.86), vec2(-0.86, 0.5));
+uniform float _speed = 1.1;
+uniform float _gradation : hint_range(0, 2) = 0.5;
+
+float wave(vec2 p) {
+	float v = sin(p.x+sin(p.y) + sin(p.y*.43));
+	return v*v;
+}
+
+float map(float time, vec2 p) {
+	float v = 0.0;
+	v += wave(p);
+	p.x += time * _speed;
+	p = p * _rot;
+	v += wave(p);
+	p.x += time * _speed * .17;
+	p = p * _rot;
+	v += wave(p);
+	v = abs(1.5 - v);
+
+	return v;
+}
+
+void fragment()
+{
+	vec2 resolution = 1.0 / SCREEN_PIXEL_SIZE;
+	vec2 uv = (FRAGCOORD.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+	vec2 p = normalize(vec3(uv.xy, 2.3)).xy * 20.0;
+	p.y += TIME * _speed * 0.3;
+	float v=map(TIME, p);
+	
+	COLOR = vec4((v * .2 + texture(SCREEN_TEXTURE,SCREEN_UV).r) / 2.0, (v * .3 + texture(SCREEN_TEXTURE,SCREEN_UV).g) / 2.0, (v * 0.19 + texture(SCREEN_TEXTURE,SCREEN_UV).b / 2.0), _gradation);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/_rot = Transform2D( 0.5, -0.86, 0.86, 0.5, 0, 0 )
+shader_param/_speed = 1.1
+shader_param/_gradation = 0.088
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.352941, 0.352941, 0.352941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.352941, 0.352941, 0.352941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.352941, 0.352941, 0.352941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.556863, 0.556863, 0.556863, 1 )
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.352941, 0.352941, 0.352941, 1 )
+
+[sub_resource type="Shader" id=15]
+code = "// CC0 licence
+// Credit Bramwell Williams
+
+shader_type canvas_item;
+
+uniform float circle_size : hint_range(0,1) = 0.5f;
+
+void fragment(){
+	if (distance(vec2(0.5,0.5), UV) < circle_size){
+		COLOR.a = 0f;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 15 )
+shader_param/circle_size = 0.5
+
+[node name="PauseMenu" type="CanvasLayer"]
+
+[node name="VirtualController" parent="." instance=ExtResource( 9 )]
+visible = false
+
+[node name="Pause" type="Control" parent="."]
+pause_mode = 2
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Pause"]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.235294 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShaderBackgroundEffect" type="ColorRect" parent="Pause"]
+material = SubResource( 2 )
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.235294 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseFront" type="Panel" parent="Pause"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 264.0
+margin_top = 131.0
+margin_right = 728.0
+margin_bottom = 476.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseMain" type="Panel" parent="Pause/PauseFront"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 100.0
+margin_top = 18.0
+margin_right = 347.0
+margin_bottom = 302.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Paused" type="Label" parent="Pause/PauseFront/PauseMain"]
+margin_left = 50.0
+margin_top = -84.0
+margin_right = 189.0
+margin_bottom = -44.0
+theme = ExtResource( 3 )
+text = "PAUSED"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContinueBtn" type="Button" parent="Pause/PauseFront/PauseMain"]
+margin_left = -22.0
+margin_top = 15.0
+margin_right = 246.0
+margin_bottom = 63.0
+rect_rotation = -3.42423
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+text = "Continue"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button3" type="Button" parent="Pause/PauseFront/PauseMain"]
+margin_left = -9.0
+margin_top = 163.0
+margin_right = 244.0
+margin_bottom = 208.0
+rect_rotation = 0.130108
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreditsBtn" type="Button" parent="Pause/PauseFront/PauseMain"]
+margin_left = -3.0
+margin_top = 245.0
+margin_right = 241.0
+margin_bottom = 288.0
+rect_rotation = 2.0
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
+text = "Credits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="Pause/PauseFront/PauseMain"]
+margin_left = -7.0
+margin_top = 336.0
+margin_right = 250.0
+margin_bottom = 382.0
+rect_rotation = -3.0
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reset" type="Button" parent="Pause/PauseFront/PauseMain"]
+margin_left = -10.0751
+margin_top = 84.2336
+margin_right = 246.925
+margin_bottom = 130.234
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
+text = "Reset"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsPanel" parent="Pause/PauseFront" instance=ExtResource( 5 )]
+visible = false
+margin_left = 41.0
+margin_top = -37.0
+margin_right = 417.0
+margin_bottom = 371.0
+
+[node name="Credits" parent="Pause/PauseFront" instance=ExtResource( 2 )]
+visible = false
+margin_left = -199.932
+margin_top = -79.0497
+margin_right = 695.068
+margin_bottom = 399.95
+
+[node name="CircleTransition" type="ColorRect" parent="Pause"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+material = SubResource( 16 )
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="VirtualController/PauseBtn" to="VirtualController" method="_on_PauseBtn_pressed"]
+[connection signal="pressed" from="Pause/PauseFront/PauseMain/ContinueBtn" to="Pause" method="_on_ContinueBtn_pressed"]
+[connection signal="pressed" from="Pause/PauseFront/PauseMain/Button3" to="Pause" method="_on_Button3_pressed"]
+[connection signal="pressed" from="Pause/PauseFront/PauseMain/CreditsBtn" to="Pause" method="_on_CreditsBtn_pressed"]
+[connection signal="pressed" from="Pause/PauseFront/PauseMain/Button2" to="Pause" method="_on_Button2_pressed"]
+[connection signal="pressed" from="Pause/PauseFront/PauseMain/Reset" to="Pause" method="_on_Reset_pressed"]
+[connection signal="pressed" from="Pause/PauseFront/OptionsPanel/OptionsBackBtn" to="Pause" method="_on_OptionsBackBtn_pressed"]
+[connection signal="toggled" from="Pause/PauseFront/OptionsPanel/CheckFullscreen" to="Pause" method="_on_CheckFullscreen_toggled"]
+[connection signal="pressed" from="Pause/PauseFront/Credits/CreditsBackBtn" to="Pause" method="_on_CreditsBackBtn_pressed"]
+
+[editable path="VirtualController"]
+
+[editable path="Pause/PauseFront/OptionsPanel"]
+
+[editable path="Pause/PauseFront/Credits"]

@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="map_tweens" type="Node2D"]
+
+[node name="TweenHeaven" type="Tween" parent="."]
+
+[node name="TweenHell" type="Tween" parent="."]

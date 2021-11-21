@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Configuration System/AudioConfigurationMenu.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow_OptionsPanelTheme.tres" type="Theme" id=2]
+
+[node name="OptionsPanel" type="Panel"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 376.0
+margin_bottom = 408.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsBackBtn" type="Button" parent="."]
+margin_left = 136.0
+margin_top = 359.0
+margin_right = 240.0
+margin_bottom = 405.0
+theme = ExtResource( 2 )
+text = "back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioConfigurationMenu" parent="." instance=ExtResource( 1 )]
+margin_left = 57.0
+margin_top = 1.0
+margin_right = -52.0
+margin_bottom = -129.0
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 112.866
+margin_top = 299.946
+margin_right = 263.866
+margin_bottom = 336.946
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckFullscreen" type="CheckBox" parent="."]
+margin_left = 122.296
+margin_top = 306.478
+margin_right = 247.296
+margin_bottom = 331.478
+theme = ExtResource( 2 )
+text = "Fullscreen"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="."]
+visible = false
+margin_left = 56.325
+margin_top = 324.867
+margin_right = 326.325
+margin_bottom = 349.867
+theme = ExtResource( 2 )
+text = "Enable Virtual Controller"
+__meta__ = {
+"_edit_use_anchors_": false
+}

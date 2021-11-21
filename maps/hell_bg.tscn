@@ -1,0 +1,187 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/background_blurred.png" type="Texture" id=1]
+[ext_resource path="res://assets/background.png" type="Texture" id=2]
+
+[node name="hell_bg" type="ParallaxBackground"]
+
+[node name="lava" type="ParallaxLayer" parent="." groups=["hell"]]
+light_mask = 4
+motion_scale = Vector2( 0.8, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="lava"]
+margin_left = -2592.0
+margin_top = -1168.0
+margin_right = 3464.0
+margin_bottom = 1216.0
+color = Color( 0.0980392, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite3" type="Sprite" parent="lava"]
+position = Vector2( 560, 17 )
+scale = Vector2( 2.1463, 1.70319 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 1640, 30, 270, 470 )
+
+[node name="tower_bg1" type="ParallaxLayer" parent="." groups=["hell"]]
+light_mask = 4
+motion_scale = Vector2( 0.8, 1 )
+
+[node name="Sprite2" type="Sprite" parent="tower_bg1"]
+position = Vector2( 16, 40 )
+scale = Vector2( 2.05217, 1.80816 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 2100, 20, 230, 490 )
+
+[node name="Sprite3" type="Sprite" parent="tower_bg1"]
+position = Vector2( 760, 59 )
+scale = Vector2( 2.83846, 1.96087 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 2330, 50, 260, 460 )
+
+[node name="tower2_bg1" type="ParallaxLayer" parent="." groups=["hell"]]
+light_mask = 4
+motion_scale = Vector2( 0.9, 1 )
+
+[node name="Sprite4" type="Sprite" parent="tower2_bg1"]
+position = Vector2( -472, -8 )
+scale = Vector2( 1.62174, 1.55 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 2100, 20, 230, 490 )
+
+[node name="Sprite5" type="Sprite" parent="tower2_bg1"]
+position = Vector2( -544, 390 )
+rotation = 1.5708
+scale = Vector2( 2.35959, 2.24268 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 2100, 20, 230, 490 )
+
+[node name="walls" type="ParallaxLayer" parent="." groups=["hell"]]
+light_mask = 4
+motion_scale = Vector2( 0.9, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ColorRect2" type="ColorRect" parent="walls"]
+margin_left = -2616.0
+margin_top = -3144.0
+margin_right = 1784.0
+margin_bottom = -350.0
+color = Color( 0.0352941, 0.0392157, 0.0431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect3" type="ColorRect" parent="walls"]
+margin_left = -2648.0
+margin_top = 416.0
+margin_right = 1760.0
+margin_bottom = 3264.0
+color = Color( 0.0352941, 0.0392157, 0.0431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="top" type="Sprite" parent="walls"]
+position = Vector2( 0, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top2" type="Sprite" parent="walls"]
+position = Vector2( 512, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top3" type="Sprite" parent="walls"]
+position = Vector2( 1024, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top4" type="Sprite" parent="walls"]
+position = Vector2( 1536, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top5" type="Sprite" parent="walls"]
+position = Vector2( -2048, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top6" type="Sprite" parent="walls"]
+position = Vector2( -1536, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top7" type="Sprite" parent="walls"]
+position = Vector2( -1024, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="top8" type="Sprite" parent="walls"]
+position = Vector2( -512, -320 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 0, 512, 130 )
+
+[node name="bot" type="Sprite" parent="walls"]
+position = Vector2( 0, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot2" type="Sprite" parent="walls"]
+position = Vector2( 512, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot3" type="Sprite" parent="walls"]
+position = Vector2( 1024, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot4" type="Sprite" parent="walls"]
+position = Vector2( 1536, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot5" type="Sprite" parent="walls"]
+position = Vector2( -2048, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot6" type="Sprite" parent="walls"]
+position = Vector2( -1536, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot7" type="Sprite" parent="walls"]
+position = Vector2( -1024, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )
+
+[node name="bot8" type="Sprite" parent="walls"]
+position = Vector2( -512, 408 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 1024, 430, 512, 80 )

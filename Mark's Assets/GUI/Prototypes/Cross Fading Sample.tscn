@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://music/CalmHeaven.ogg" type="AudioStream" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Prototypes/Cross Fading Sample.gd" type="Script" id=2]
+[ext_resource path="res://music/Hell.ogg" type="AudioStream" id=3]
+
+[node name="CrossFadingSample" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="FadeInBtn" type="Button" parent="."]
+margin_right = 88.0
+margin_bottom = 32.0
+text = "Fade in"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeOutBtn" type="Button" parent="."]
+margin_top = 48.0
+margin_right = 88.0
+margin_bottom = 80.0
+text = "Fade out"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 144.0
+margin_top = 72.0
+margin_right = 264.0
+margin_bottom = 144.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween2" type="Tween" parent="."]
+
+[node name="ToggleFadeInAndOutBtn" type="Button" parent="."]
+margin_left = 424.0
+margin_top = 16.0
+margin_right = 436.0
+margin_bottom = 36.0
+text = "Toggle Fade in/out"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_left = 424.0
+margin_top = 48.0
+margin_right = 560.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween3" type="Tween" parent="."]
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+margin_left = 424.0
+margin_top = 48.0
+margin_right = 560.0
+margin_bottom = 128.0
+color = Color( 0.517647, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween5" type="Tween" parent="."]
+
+[node name="Heaven" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+autoplay = true
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Hell" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+autoplay = true
+
+[node name="Tween4" type="Tween" parent="."]
+
+[connection signal="pressed" from="FadeInBtn" to="." method="_on_FadeInBtn_pressed"]
+[connection signal="pressed" from="FadeOutBtn" to="." method="_on_FadeOutBtn_pressed"]
+[connection signal="pressed" from="ToggleFadeInAndOutBtn" to="." method="_on_ToggleFadeInAndOutBtn_pressed"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

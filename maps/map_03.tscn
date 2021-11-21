@@ -1,0 +1,103 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://body/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://maps/tilemap_heaven.tres" type="TileSet" id=2]
+[ext_resource path="res://body/crate.tscn" type="PackedScene" id=3]
+[ext_resource path="res://body/pressure_plate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://body/exit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://body/spike.tscn" type="PackedScene" id=6]
+[ext_resource path="res://maps/tilemap_hell.tres" type="TileSet" id=7]
+[ext_resource path="res://maps/hell_bg.tscn" type="PackedScene" id=8]
+[ext_resource path="res://maps/heaven_bg.tscn" type="PackedScene" id=9]
+[ext_resource path="res://maps/Main.tres.gd" type="Script" id=10]
+[ext_resource path="res://body/door.tscn" type="PackedScene" id=11]
+[ext_resource path="res://body/beam.tscn" type="PackedScene" id=12]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+string_next_level = "res://maps/map_04.tscn"
+time_to_gold = 10.5
+time_to_silver = 12.0
+
+[node name="door" parent="." instance=ExtResource( 11 )]
+position = Vector2( -928, 64 )
+scale = Vector2( 0.986517, 2.01541 )
+
+[node name="traps" type="Node2D" parent="."]
+
+[node name="spike" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -1312, 224 )
+
+[node name="spike2" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -1248, 224 )
+
+[node name="spike3" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -1184, 224 )
+
+[node name="spike4" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -551, 290 )
+
+[node name="spike5" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -487, 290 )
+
+[node name="spike6" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -423, 290 )
+
+[node name="spike7" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -352, 290 )
+
+[node name="spike8" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -288, 290 )
+
+[node name="spike9" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -224, 290 )
+
+[node name="spike10" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -160, 290 )
+
+[node name="spike11" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -96, 290 )
+
+[node name="spike12" parent="traps" instance=ExtResource( 6 )]
+position = Vector2( -32, 290 )
+
+[node name="heaven" type="TileMap" parent="." groups=["heaven"]]
+tile_set = ExtResource( 2 )
+format = 1
+tile_data = PoolIntArray( -131093, 2, 0, -131092, 2, 0, -131091, 2, 0, -27, 2, 0, -65526, 2, 0, 65509, 2, 0, 10, 2, 0, 131045, 2, 0, 65546, 2, 0, 196581, 2, 0, 196582, 2, 0, 196583, 2, 0, 196584, 2, 0, 196585, 2, 0, 196586, 2, 0, 196587, 2, 0, 196588, 2, 0, 196589, 2, 0, 196590, 2, 0, 196591, 2, 0, 196592, 2, 0, 196593, 2, 0, 196594, 2, 0, 196595, 2, 0, 196596, 2, 0, 196600, 2, 0, 196601, 1, 0, 196604, 2, 0, 196605, 1, 0, 131072, 2, 0, 131073, 2, 0, 131074, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 131082, 2, 0, 262122, 2, 0, 262126, 2, 0, 262132, 2, 0, 196610, 2, 0, 327658, 2, 0, 327659, 2, 0, 327660, 2, 0, 327661, 2, 0, 327662, 2, 0, 327668, 2, 0, 262146, 2, 0, 393204, 2, 0, 393205, 2, 0, 393206, 2, 0, 393207, 2, 0, 393208, 2, 0, 393209, 2, 0, 393210, 2, 0, 393211, 2, 0, 393212, 2, 0, 393213, 2, 0, 393214, 2, 0, 393215, 2, 0, 327680, 2, 0, 327681, 2, 0, 327682, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hell" type="TileMap" parent="." groups=["hell"]]
+tile_set = ExtResource( 7 )
+format = 1
+tile_data = PoolIntArray( -131093, 1, 0, -131092, 1, 0, -131091, 1, 0, -27, 2, 0, -65526, 2, 0, 65509, 2, 0, 10, 2, 0, 131045, 2, 0, 65546, 2, 0, 196581, 2, 0, 196582, 2, 0, 196583, 2, 0, 196584, 2, 0, 196585, 2, 0, 196586, 2, 0, 196587, 1, 0, 196588, 1, 0, 196589, 1, 0, 196590, 2, 0, 196591, 2, 0, 196592, 2, 0, 196593, 2, 0, 196594, 2, 0, 196595, 2, 0, 196596, 2, 0, 196600, 1, 0, 196601, 2, 0, 196604, 1, 0, 196605, 2, 0, 131072, 1, 0, 131073, 1, 0, 131074, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 131082, 2, 0, 262122, 2, 0, 262126, 2, 0, 262132, 2, 0, 196610, 2, 0, 327658, 2, 0, 327659, 2, 0, 327660, 2, 0, 327661, 2, 0, 327662, 2, 0, 327668, 2, 0, 262146, 2, 0, 393204, 2, 0, 393205, 2, 0, 393206, 2, 0, 393207, 2, 0, 393208, 2, 0, 393209, 2, 0, 393210, 2, 0, 393211, 2, 0, 393212, 2, 0, 393213, 2, 0, 393214, 2, 0, 393215, 2, 0, 327680, 2, 0, 327681, 2, 0, 327682, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1584, 76 )
+
+[node name="crate" parent="." instance=ExtResource( 3 )]
+position = Vector2( -1248, -232 )
+
+[node name="pressure_plate" parent="." instance=ExtResource( 4 )]
+position = Vector2( -1056, 136 )
+node_path_wanted = NodePath("../door")
+
+[node name="exit" parent="." instance=ExtResource( 5 )]
+position = Vector2( 520, 96 )
+true_if_activated = true
+
+[node name="beam" parent="." instance=ExtResource( 12 )]
+position = Vector2( -664, 224 )
+scale = Vector2( 1.09758, 2.90486 )
+
+[node name="heaven_bg" parent="." instance=ExtResource( 9 )]
+
+[node name="hell_bg" parent="." instance=ExtResource( 8 )]

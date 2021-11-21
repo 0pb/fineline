@@ -1,0 +1,146 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow_OptionsPanelTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow.tres" type="Theme" id=2]
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/Credits.gd" type="Script" id=3]
+[ext_resource path="res://Mark's Assets/Sprites/88Qwvt_1.png" type="Texture" id=4]
+
+[node name="Credits" type="Panel"]
+margin_right = 895.0
+margin_bottom = 479.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Members" type="Label" parent="."]
+margin_left = 25.3742
+margin_top = 16.3926
+margin_right = 513.374
+margin_bottom = 153.393
+theme = ExtResource( 2 )
+text = "Members:
+
+- Hilo ->
+- DeveloperMode ->
+- Sayanel ->"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="$4Y4N37" type="LinkButton" parent="."]
+margin_left = 182.783
+margin_top = 132.028
+margin_right = 389.783
+margin_bottom = 149.028
+theme = ExtResource( 1 )
+text = "Link to his itch.io page"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeveloperMode" type="LinkButton" parent="."]
+margin_left = 283.629
+margin_top = 102.693
+margin_right = 490.629
+margin_bottom = 119.693
+theme = ExtResource( 1 )
+text = "Link to his itch.io page"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HiloSven" type="LinkButton" parent="."]
+margin_left = 130.826
+margin_top = 74.4543
+margin_right = 337.826
+margin_bottom = 91.4543
+theme = ExtResource( 1 )
+text = "Link to his itch.io page"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Programmers" type="Label" parent="."]
+margin_left = 22.5333
+margin_top = 200.526
+margin_right = 510.533
+margin_bottom = 309.526
+theme = ExtResource( 2 )
+text = "Developers:
+
+- DeveloperMode (menu, utilities)
+- Sayanel (Game mechanics, gameplay)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Art" type="Label" parent="."]
+margin_left = 243.875
+margin_top = 372.22
+margin_right = 357.875
+margin_bottom = 453.22
+theme = ExtResource( 2 )
+text = "ART
+
+- Sayanel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Composer" type="Label" parent="."]
+margin_left = 30.6593
+margin_top = 369.993
+margin_right = 167.659
+margin_bottom = 450.993
+theme = ExtResource( 2 )
+text = "COMPOSER:
+
+- Hilo"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sound Effects" type="Label" parent="."]
+visible = false
+margin_left = 580.517
+margin_top = 12.3472
+margin_right = 765.517
+margin_bottom = 93.3472
+theme = ExtResource( 2 )
+text = "SOUND EFFECTS
+
+- ?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreditsBackBtn" type="Button" parent="."]
+margin_left = 393.191
+margin_top = 479.203
+margin_right = 496.191
+margin_bottom = 523.203
+theme = ExtResource( 1 )
+text = "BACK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="88Qwvt_1" type="Sprite" parent="."]
+position = Vector2( 781.277, 329.288 )
+scale = Vector2( 0.19943, 0.19943 )
+texture = ExtResource( 4 )
+
+[node name="SoundtrackLink" type="LinkButton" parent="."]
+margin_left = 31.4289
+margin_top = 453.475
+margin_right = 193.429
+margin_bottom = 467.475
+text = "Listen to Soundrack here!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="$4Y4N37" to="." method="_on_4Y4N37_pressed"]
+[connection signal="pressed" from="DeveloperMode" to="." method="_on_DeveloperMode_pressed"]
+[connection signal="pressed" from="HiloSven" to="." method="_on_HiloSven_pressed"]
+[connection signal="pressed" from="SoundtrackLink" to="." method="_on_LinkButton_pressed"]

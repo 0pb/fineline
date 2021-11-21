@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/traps.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends StaticBody2D
+
+
+onready var node_collision = get_node(\"collision\")
+
+export var in_hell = false
+export var in_heaven = false
+
+
+func _ready():
+    if in_hell:
+        add_to_group(\"hell\")
+    if in_heaven:
+        add_to_group(\"heaven\")
+
+func update_signals(parent_node):
+    node_collision.connect(\"body_entered\", parent_node, \"_on_spike_entered\")
+
+
+func disable_on_world_change(bool_):
+    if bool_:
+        node_collision.monitoring = true
+    else:
+        node_collision.monitoring = false
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 24 )
+
+[node name="spike" type="StaticBody2D" groups=["traps"]]
+collision_layer = 2
+collision_mask = 2
+script = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 7, 4, 50, 60 )
+
+[node name="collision" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collision"]
+shape = SubResource( 2 )

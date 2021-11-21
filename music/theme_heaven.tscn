@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://music/heaven.ogg" type="AudioStream" id=1]
+[ext_resource path="res://music/theme_song.gd" type="Script" id=2]
+
+[node name="theme_heaven" type="AudioStreamPlayer"]
+pause_mode = 2
+stream = ExtResource( 1 )
+volume_db = -80.0
+bus = "heaven"
+script = ExtResource( 2 )
+transition_duration = 4.0
+
+[node name="Tween_end" type="Tween" parent="."]
+
+[node name="Tween_begin" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]
+process_mode = 0
+wait_time = 10.0
+one_shot = true

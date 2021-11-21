@@ -1,0 +1,575 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Fonts/barbeque grill/BarbequeGrill-2OnRo.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/playball/Playball-q6o1.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/Credits.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow1.tres" type="Theme" id=4]
+[ext_resource path="res://Mark's Assets/GUI/Runtime Menu/MainMenu.gd" type="Script" id=5]
+[ext_resource path="res://Mark's Assets/GUI/Configuration System/OptionsPanel.tscn" type="PackedScene" id=6]
+[ext_resource path="res://music/Main_Menu.ogg" type="AudioStream" id=8]
+
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 1, 1, 1, 1, 0.53125, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="StreamTexture" id=3]
+flags = 3
+load_path = "res://.import/background.png-1fdba8b6a966ce2c2ffc607f7c096e95.stex"
+
+[sub_resource type="StreamTexture" id=4]
+flags = 3
+load_path = "res://.import/background.png-1fdba8b6a966ce2c2ffc607f7c096e95.stex"
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+uniform float frequency = 60;
+uniform float depth = 0.005;
+
+void fragment() {
+	vec2 uv = SCREEN_UV;
+	uv.x += sin(uv.y * frequency + TIME) * depth;
+	uv.x = clamp(uv.x, 0.0, 1.0);
+	vec3 c = textureLod(SCREEN_TEXTURE, uv, 0.0).rgb;
+
+	COLOR.rgb = c;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/frequency = 2.0
+shader_param/depth = 0.002
+
+[sub_resource type="Shader" id=7]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/god-rays
+
+Feel free to use, improve and change this shader according to your needs
+and consider sharing the modified result on godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+uniform float angle = -0.3;
+uniform float position = -0.2;
+uniform float spread : hint_range(0.0, 1.0) = 0.5;
+uniform float cutoff : hint_range(-1.0, 1.0) = 0.1;
+uniform float falloff : hint_range(0.0, 1.0) = 0.2;
+uniform float edge_fade : hint_range(0.0, 1.0) = 0.15;
+
+uniform float speed = 1.0;
+uniform float ray1_density = 8.0;
+uniform float ray2_density = 30.0;
+uniform float ray2_intensity : hint_range(0.0, 1.0) = 0.3;
+
+uniform vec4 color : hint_color = vec4(1.0, 0.9, 0.65, 0.8);
+
+uniform bool hdr = false;
+uniform float seed = 5.0;
+
+// Random and noise functions from Book of Shader's chapter on Noise.
+float random(vec2 _uv) {
+    return fract(sin(dot(_uv.xy,
+                         vec2(12.9898, 78.233))) *
+        43758.5453123);
+}
+
+float noise (in vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve. Same as SmoothStep()
+    vec2 u = f * f * (3.0-2.0 * f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+
+mat2 rotate(float _angle){
+    return mat2(vec2(cos(_angle), -sin(_angle)),
+                vec2(sin(_angle), cos(_angle)));
+}
+
+vec4 screen(vec4 base, vec4 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+void fragment()
+{
+	
+	// Rotate, skew and move the UVs
+	vec2 transformed_uv = ( rotate(angle) * (UV - position) )  / ( (UV.y + spread) - (UV.y * spread) );
+	
+	// Animate the ray according the the new transformed UVs
+	vec2 ray1 = vec2(transformed_uv.x * ray1_density + sin(TIME * 0.1 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	vec2 ray2 = vec2(transformed_uv.x * ray2_density + sin(TIME * 0.2 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	
+	// Cut off the ray's edges
+	float cut = step(cutoff, transformed_uv.x) * step(cutoff, 1.0 - transformed_uv.x);
+	ray1 *= cut;
+	ray2 *= cut;
+	
+	// Apply the noise pattern (i.e. create the rays)
+	float rays;
+	
+	if (hdr){
+		// This is not really HDR, but check this to not clamp the two merged rays making 
+		// their values go over 1.0. Can make for some nice effect
+		rays = noise(ray1) + (noise(ray2) * ray2_intensity);
+	}
+	else{
+		 rays = clamp(noise(ray1) + (noise(ray2) * ray2_intensity), 0., 1.);
+	}
+	
+	// Fade out edges
+	rays *= smoothstep(0.0, falloff, (1.0 - UV.y)); // Bottom
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, transformed_uv.x); // Left
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, 1.0 - transformed_uv.x); // Right
+	
+	// Color to the rays
+	vec3 shine = vec3(rays) * color.rgb;
+
+	// Try different blending modes for a nicer effect. \"Screen\" is included in the code,
+	// but take a look at https://godotshaders.com/snippet/blending-modes/ for more.
+	// With \"Screen\" blend mode:
+	shine = screen(texture(SCREEN_TEXTURE, SCREEN_UV), vec4(color)).rgb;
+	
+	COLOR = vec4(shine, rays * color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+shader_param/angle = 0.028
+shader_param/position = 0.141
+shader_param/spread = 0.5
+shader_param/cutoff = 0.1
+shader_param/falloff = 0.2
+shader_param/edge_fade = 0.15
+shader_param/speed = 1.0
+shader_param/ray1_density = 8.0
+shader_param/ray2_density = 30.0
+shader_param/ray2_intensity = 0.3
+shader_param/color = Color( 1, 0.9, 0.65, 0.8 )
+shader_param/hdr = false
+shader_param/seed = 5.0
+
+[sub_resource type="DynamicFont" id=9]
+size = 126
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=10]
+default_font = SubResource( 9 )
+
+[sub_resource type="Shader" id=11]
+code = "shader_type canvas_item;
+
+// Gonkee's fire shader for Godot 3 - full tutorial https://youtu.be/CI3JZ-3cabg
+// If you use this shader, I would prefer it if you gave credit to me and my channel
+
+uniform vec4 transparent : hint_color;
+uniform vec4 inner : hint_color;
+uniform vec4 outer : hint_color;
+
+uniform float inner_threshold = 0.4;
+uniform float outer_threshold = 0.15;
+uniform float soft_edge = 0.04;
+
+uniform vec2 center = vec2(0.5, 0.8);
+
+uniform int OCTAVES = 6;
+
+float rand(vec2 coord){
+	return fract(sin(dot(coord, vec2(12.9898, 78.233)))* 43758.5453123);
+}
+
+float noise(vec2 coord){
+	vec2 i = floor(coord);
+	vec2 f = fract(coord);
+
+	// 4 corners of a rectangle surrounding our point
+	float a = rand(i);
+	float b = rand(i + vec2(1.0, 0.0));
+	float c = rand(i + vec2(0.0, 1.0));
+	float d = rand(i + vec2(1.0, 1.0));
+
+	vec2 cubic = f * f * (3.0 - 2.0 * f);
+
+	return mix(a, b, cubic.x) + (c - a) * cubic.y * (1.0 - cubic.x) + (d - b) * cubic.x * cubic.y;
+}
+
+float fbm(vec2 coord){
+	float value = 0.0;
+	float scale = 0.5;
+
+	for(int i = 0; i < OCTAVES; i++){
+		value += noise(coord) * scale;
+		coord *= 2.0;
+		scale *= 0.5;
+	}
+	return value;
+}
+
+float overlay(float base, float top) {
+	if (base < 0.5) {
+		return 2.0 * base * top;
+	} else {
+		return 1.0 - 2.0 * (1.0 - base) * (1.0 - top);
+	}
+}
+
+float egg_shape(vec2 coord, float radius){
+	vec2 diff = abs(coord - center);
+
+	if (coord.y < center.y){
+		diff.y /= 2.0;
+	} else {
+		diff.y *= 2.0;
+	}
+
+	float dist = sqrt(diff.x * diff.x + diff.y * diff.y) / radius;
+	float value = sqrt(1.0 - dist * dist);
+	return clamp(value, 0.0, 1.0);
+}
+
+void fragment() {
+	vec2 coord = UV * 8.0;
+	vec2 fbmcoord = coord / 6.0;
+
+	float egg_s = egg_shape(UV, 0.4);
+	egg_s += egg_shape(UV, 0.2) / 2.0;
+
+	float noise1 = noise(coord + vec2(TIME * 0.25, TIME * 4.0));
+	float noise2 = noise(coord + vec2(TIME * 0.5, TIME * 7.0));
+	float combined_noise = (noise1 + noise2) / 2.0;
+
+	float fbm_noise = fbm(fbmcoord + vec2(0.0, TIME * 3.0));
+	fbm_noise = overlay(fbm_noise, UV.y);
+
+	float everything_combined = combined_noise * fbm_noise * egg_s;
+
+	if (everything_combined < outer_threshold){
+		COLOR = transparent;
+	} else if (everything_combined < outer_threshold + soft_edge){
+		COLOR = mix(transparent, outer, (everything_combined - outer_threshold) / soft_edge);
+	} else if (everything_combined < inner_threshold){
+		COLOR = outer;
+	} else if (everything_combined < inner_threshold + soft_edge){
+		COLOR = mix(outer, inner, (everything_combined - inner_threshold) / soft_edge);
+	} else {
+		COLOR = inner;
+	}
+
+	//COLOR = vec4(vec3(everything_combined), 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=12]
+shader = SubResource( 11 )
+shader_param/transparent = Color( 0, 0, 0, 0 )
+shader_param/inner = Color( 0.85098, 0.239216, 0, 1 )
+shader_param/outer = Color( 0.866667, 0.384314, 0, 1 )
+shader_param/inner_threshold = 0.4
+shader_param/outer_threshold = 0.15
+shader_param/soft_edge = 0.04
+shader_param/center = Vector2( 0.5, 0.8 )
+shader_param/OCTAVES = 6
+
+[sub_resource type="DynamicFont" id=13]
+size = 128
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=14]
+default_font = SubResource( 13 )
+
+[sub_resource type="StyleBoxFlat" id=15]
+bg_color = Color( 0.823529, 0.690196, 0.690196, 1 )
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 0.764706, 0.490196, 0.490196, 1 )
+
+[sub_resource type="StyleBoxFlat" id=17]
+bg_color = Color( 0.576471, 0.376471, 0.376471, 1 )
+
+[sub_resource type="Shader" id=18]
+code = "// CC0 licence
+// Credit Bramwell Williams
+
+shader_type canvas_item;
+
+uniform float circle_size : hint_range(0,1) = 0.5f;
+
+void fragment(){
+	if (distance(vec2(0.5,0.5), UV) < circle_size){
+		COLOR.a = 0f;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=19]
+shader = SubResource( 18 )
+shader_param/circle_size = 0.601
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="MenuMenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+bus = "Music"
+
+[node name="props" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="props"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 2144.0
+margin_bottom = 1103.0
+color = Color( 0.32549, 0.129412, 0.129412, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="props"]
+margin_right = 2083.0
+margin_bottom = 1134.0
+texture = SubResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 513.0
+margin_bottom = 301.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cloud2" type="Sprite" parent="Panel"]
+position = Vector2( -365, -196 )
+texture = SubResource( 3 )
+region_enabled = true
+region_rect = Rect2( 670, 80, 250, 200 )
+
+[node name="cloud" type="Sprite" parent="Panel"]
+position = Vector2( -233, -53 )
+texture = SubResource( 4 )
+region_enabled = true
+region_rect = Rect2( 190, 90, 240, 230 )
+
+[node name="rect_with_mirage" type="ColorRect" parent="Panel"]
+material = SubResource( 6 )
+margin_left = -512.0
+margin_top = -300.0
+margin_right = -104.0
+margin_bottom = 53.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTML Disclaimer" type="Label" parent="Panel"]
+visible = false
+margin_left = 127.054
+margin_top = -48.9638
+margin_right = 477.054
+margin_bottom = 144.036
+theme = ExtResource( 4 )
+text = "Disclaimer:
+
+The web based version of 
+Fine Line is prone to audio 
+glitches and for reliable
+audio use the download
+executables."
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Control" parent="Panel"]
+margin_left = -36.0
+margin_top = -213.0
+margin_right = 4.0
+margin_bottom = -173.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rays" type="ColorRect" parent="Panel/Title"]
+material = SubResource( 8 )
+margin_left = -356.0
+margin_top = -863.0
+margin_right = 65.0
+margin_bottom = 131.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fine" type="RichTextLabel" parent="Panel/Title"]
+margin_left = -183.0
+margin_top = -84.0
+margin_right = 26.0
+margin_bottom = 81.0
+theme = SubResource( 10 )
+bbcode_enabled = true
+bbcode_text = "[wave]Fine[/wave]"
+text = "Fine"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fire" type="ColorRect" parent="Panel/Title"]
+material = SubResource( 12 )
+margin_left = 249.0
+margin_top = -102.0
+margin_right = 357.0
+margin_bottom = 38.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hell" type="RichTextLabel" parent="Panel/Title"]
+self_modulate = Color( 1, 0.164706, 0.164706, 1 )
+margin_left = 50.0
+margin_top = -62.0
+margin_right = 299.0
+margin_bottom = 75.0
+theme = SubResource( 14 )
+bbcode_enabled = true
+bbcode_text = "[shake rate=24 level=25]Line[/shake]"
+text = "Line"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="Control" parent="Panel"]
+margin_left = -29.0
+margin_top = 24.0
+margin_right = 11.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayBtn" type="Button" parent="Panel/Buttons"]
+margin_left = -61.0
+margin_top = -151.066
+margin_right = 105.0
+margin_bottom = -81.0661
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionBtn" type="Button" parent="Panel/Buttons"]
+margin_left = -61.0
+margin_top = 18.2596
+margin_right = 105.0
+margin_bottom = 88.2596
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LevelSelect" type="Button" parent="Panel/Buttons"]
+margin_left = -60.5467
+margin_top = -65.6976
+margin_right = 105.453
+margin_bottom = 4.30243
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
+text = "Select level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreditBtn" type="Button" parent="Panel/Buttons"]
+margin_left = -61.0
+margin_top = 102.26
+margin_right = 105.0
+margin_bottom = 172.26
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
+text = "Credits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitBtn" type="Button" parent="Panel/Buttons"]
+margin_left = -61.0
+margin_top = 187.26
+margin_right = 105.0
+margin_bottom = 257.26
+theme = ExtResource( 4 )
+custom_styles/hover = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/normal = SubResource( 17 )
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsPanel" parent="Panel" instance=ExtResource( 6 )]
+visible = false
+margin_left = -198.0
+margin_top = -185.0
+margin_right = 178.0
+margin_bottom = 223.0
+
+[node name="Credits" parent="Panel" instance=ExtResource( 3 )]
+visible = false
+margin_left = -449.811
+margin_top = -257.73
+margin_right = 445.189
+margin_bottom = 221.271
+
+[node name="CircleTransition" type="ColorRect" parent="."]
+visible = false
+self_modulate = Color( 0, 0, 0, 1 )
+material = SubResource( 19 )
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Panel/Buttons/PlayBtn" to="." method="_on_PlayBtn_pressed"]
+[connection signal="pressed" from="Panel/Buttons/OptionBtn" to="." method="_on_OptionBtn_pressed"]
+[connection signal="pressed" from="Panel/Buttons/LevelSelect" to="." method="_on_LevelSelect_pressed"]
+[connection signal="pressed" from="Panel/Buttons/CreditBtn" to="." method="_on_CreditBtn_pressed"]
+[connection signal="pressed" from="Panel/Buttons/ExitBtn" to="." method="_on_ExitBtn_pressed"]
+[connection signal="pressed" from="Panel/OptionsPanel/OptionsBackBtn" to="." method="_on_OptionsBackBtn_pressed"]
+[connection signal="toggled" from="Panel/OptionsPanel/CheckFullscreen" to="." method="_on_CheckFullscreen_toggled"]
+[connection signal="pressed" from="Panel/Credits/CreditsBackBtn" to="." method="_on_CreditsBackBtn_pressed"]
+
+[editable path="Panel/OptionsPanel"]
+[editable path="Panel/Credits"]

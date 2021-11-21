@@ -1,0 +1,137 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/white_rect.png" type="Texture" id=1]
+[ext_resource path="res://music/Win_Heaven.wav" type="AudioStream" id=2]
+[ext_resource path="res://music/Win_Hell.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/exit.png" type="Texture" id=4]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends StaticBody2D
+
+
+signal on_end_reached
+
+
+export var true_if_activated = false
+onready var node_collision = get_node(\"collision\")
+
+
+
+func _physics_process(delta):
+    $Sprite3.rotation_degrees += 0.3
+    $Sprite4.rotation_degrees += 0.6
+
+
+func _ready():
+    node_collision.connect(\"body_entered\", self, \"_on_exit_enter\")
+    if get_parent():
+        connect(\"on_end_reached\", get_parent(), \"_on_exit\")
+
+
+func activate():
+    visible = true
+    true_if_activated = true
+
+
+func deactivate():
+    visible = false
+    true_if_activated = false
+
+
+func _on_exit_enter(area):
+    if true_if_activated:
+        if area.is_in_group(\"player\"):
+            $Label.visible = true
+            $win_heaven.play()
+            $win_hell.play()
+            emit_signal(\"on_end_reached\")
+            
+            #theaven._on_ending_song()
+            #thell._on_ending_song()
+            
+            if has_node(\"/root/Main/player\"):
+                get_parent().get_node(\"player\").stop_moving = true
+                #print(\"Player stops moving.\")
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.349576 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0.00373134, 1 )
+colors = PoolColorArray( 0.0999527, 0.581543, 0, 1, 0.12549, 1, 0, 0.545098 )
+
+[node name="exit" type="StaticBody2D"]
+script = SubResource( 1 )
+
+[node name="Sprite3" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 6, 6, 52, 52 )
+
+[node name="Sprite4" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.478431 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 67, 6, 55, 52 )
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+self_modulate = Color( 0.12549, 0.572549, 0, 1 )
+position = Vector2( 0, 32 )
+scale = Vector2( 1, 0.03125 )
+texture = ExtResource( 1 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+visible = false
+self_modulate = Color( 0.219608, 1, 0, 0.25098 )
+position = Vector2( 0, -4 )
+scale = Vector2( 0.84375, 1.10937 )
+texture = ExtResource( 1 )
+
+[node name="collision" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collision"]
+shape = SubResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = -72.0
+margin_top = -56.0
+margin_right = 79.0
+margin_bottom = -42.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_styles/normal = SubResource( 3 )
+text = "(going to the next level)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2( 0, 30 )
+emitting = false
+amount = 10
+lifetime = 2.0
+emission_shape = 2
+emission_rect_extents = Vector2( 25, 1 )
+gravity = Vector2( 0, -10 )
+scale_amount = 3.0
+scale_amount_curve = SubResource( 4 )
+color_ramp = SubResource( 5 )
+
+[node name="win_heaven" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = 5.0
+bus = "heaven"
+
+[node name="win_hell" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = 5.0
+bus = "hell"

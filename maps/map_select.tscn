@@ -1,0 +1,794 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow.tres" type="Theme" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow2.tres" type="Theme" id=3]
+[ext_resource path="res://music/Level_select.ogg" type="AudioStream" id=4]
+[ext_resource path="res://assets/medals.png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+
+var transitionincrBool = false
+var transitionincr = 1
+
+var what_scene_index = 0
+
+
+func _ready():
+	AutoloadControl.back_to_main_menu() #I had to add this one though even it's not a main menu because singlton soundtracks seem to play here, it must be played in the map levels.
+	$go_back.grab_focus()
+
+	get_tree().root.connect(\"size_changed\", self, \"_on_viewport_size_changed\")
+	_relocate_and_resize()
+
+	for node_button in get_node(\"CenterContainer/GridContainer\").get_children():
+	    node_button.connect(\"pressed\", self, \"_on_pressed\", [node_button])
+
+	    var level_number = node_button.name.split(\"Level\", true, 1)[1]
+	    node_button.text = \" Level \" + level_number + \" \"
+
+	    if ResourceLoader.exists(\"res://maps/map_\" + level_number + \".tscn\") and \\
+	            data_time.dict_timing_medal.has(\"res://maps/map_\" + level_number + \".tscn\"):
+	        node_button.disabled = false
+	        node_button.get_node(\"hbox/Label\").text = data_time.dict_timing_medal[\"res://maps/map_\" + level_number + \".tscn\"]['time']
+	        node_button.get_node(\"hbox/Control/gold\").visible = data_time.dict_timing_medal[\"res://maps/map_\" + level_number + \".tscn\"]['gold']
+	        node_button.get_node(\"hbox/Control/silver\").visible = data_time.dict_timing_medal[\"res://maps/map_\" + level_number + \".tscn\"]['silver']
+	    else:
+	        node_button.disabled = true
+
+
+func _physics_process(_delta):
+    if transitionincrBool:
+        if transitionincr < -.25:
+            transitionincrBool = false
+            if what_scene_index == 1:
+                get_tree().change_scene(\"res://Mark's Assets/GUI/Runtime Menu/MainMenu.tscn\")
+
+        $CircleTransition.get_material().set_shader_param(\"circle_size\", transitionincr) #
+        transitionincr -= 0.02
+
+
+func _on_pressed(node_button):
+    var level_number = node_button.name.split(\"Level\", true, 1)[1]
+    get_tree().change_scene(\"res://maps/map_\" + level_number + \".tscn\")
+
+
+func _on_go_back_pressed():
+    $CircleTransition.mouse_filter = MOUSE_FILTER_STOP
+    what_scene_index = 1
+    $LevelSelectAudio.stop()
+    transitionincrBool = true
+
+
+func _on_viewport_size_changed():
+    _relocate_and_resize()
+    pass
+
+func _relocate_and_resize():
+    $CircleTransition.rect_size = get_viewport().size
+    $RectangleBg.rect_size = get_viewport().size
+    $ShaderBackground.rect_size = get_viewport().size
+    $go_back.set_global_position(Vector2(get_viewport().size.x/2-$go_back.rect_size.x/2,get_viewport().size.y*.85-$go_back.rect_size.y/2) )
+    $Label.set_global_position(Vector2(get_viewport().size.x/2-$Label.rect_size.x/2,get_viewport().size.y*.15-$Label.rect_size.y/2) )
+    
+    
+"
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+// Background Noise
+
+uniform mat2 _rot = mat2( vec2(0.5, 0.86), vec2(-0.86, 0.5));
+uniform float _speed = 1.1;
+uniform float _gradation : hint_range(0, 2) = 0.5;
+
+float wave(vec2 p) {
+	float v = sin(p.x+sin(p.y) + sin(p.y*.43));
+	return v*v;
+}
+
+float map(float time, vec2 p) {
+	float v = 0.0;
+	v += wave(p);
+	p.x += time * _speed;
+	p = p * _rot;
+	v += wave(p);
+	p.x += time * _speed * .17;
+	p = p * _rot;
+	v += wave(p);
+	v = abs(1.5 - v);
+
+	return v;
+}
+
+void fragment()
+{
+	vec2 resolution = 1.0 / SCREEN_PIXEL_SIZE;
+	vec2 uv = (FRAGCOORD.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+	vec2 p = normalize(vec3(uv.xy, 2.3)).xy * 10.0;
+	p.y += TIME * _speed * 0.3;
+	float v=map(TIME, p);
+	
+	COLOR = vec4((v * .7 + texture(SCREEN_TEXTURE,SCREEN_UV).r) / 2.0, (v * .3 + texture(SCREEN_TEXTURE,SCREEN_UV).g) / 2.0, (v * 0.49 + texture(SCREEN_TEXTURE,SCREEN_UV).b / 2.0), _gradation);
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/_rot = Transform2D( 0.5, -0.86, 0.86, 0.5, 0, 0 )
+shader_param/_speed = 0.5
+shader_param/_gradation = 0.5
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.266667, 0.560784, 0.137255, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.505882, 0.764706, 0.388235, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.290196, 0.403922, 0.239216, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.160784, 0.360784, 0.0705882, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Shader" id=8]
+code = "// CC0 licence
+// Credit Bramwell Williams
+
+shader_type canvas_item;
+
+uniform float circle_size : hint_range(0,1) = 0.5f;
+
+void fragment(){
+	if (distance(vec2(0.5,0.5), UV) < circle_size){
+		COLOR.a = 0f;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+shader_param/circle_size = 1.0
+
+[node name="Level Buttons" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RectangleBg" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.376471, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShaderBackground" type="ColorRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.360784 )
+material = SubResource( 3 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.899
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer"]
+margin_left = 174.0
+margin_top = 211.0
+margin_right = 849.0
+margin_bottom = 327.0
+custom_constants/vseparation = 50
+custom_constants/hseparation = 50
+columns = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_Level01" type="Button" parent="CenterContainer/GridContainer"]
+margin_right = 95.0
+margin_bottom = 33.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level01"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level01/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level01/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level01/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level01/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level02" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 145.0
+margin_right = 240.0
+margin_bottom = 33.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level02"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level02/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level02/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level02/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level02/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level03" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 290.0
+margin_right = 385.0
+margin_bottom = 33.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level03"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level03/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level03/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level03/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level03/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level04" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 435.0
+margin_right = 530.0
+margin_bottom = 33.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level04"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level04/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level04/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level04/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level04/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level05" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 580.0
+margin_right = 675.0
+margin_bottom = 33.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level05"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level05/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level05/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level05/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level05/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level06" type="Button" parent="CenterContainer/GridContainer"]
+margin_top = 83.0
+margin_right = 95.0
+margin_bottom = 116.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level06"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level06/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level06/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level06/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level06/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level07" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 145.0
+margin_top = 83.0
+margin_right = 240.0
+margin_bottom = 116.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level07"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level07/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level07/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level07/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level07/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level08" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 290.0
+margin_top = 83.0
+margin_right = 385.0
+margin_bottom = 116.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level08"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level08/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level08/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level08/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level08/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level09" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 435.0
+margin_top = 83.0
+margin_right = 530.0
+margin_bottom = 116.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level09"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level09/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level09/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level09/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level09/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="Button_Level10" type="Button" parent="CenterContainer/GridContainer"]
+margin_left = 580.0
+margin_top = 83.0
+margin_right = 675.0
+margin_bottom = 116.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+text = "Level 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hbox" type="HBoxContainer" parent="CenterContainer/GridContainer/Button_Level10"]
+anchor_top = 0.891
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CenterContainer/GridContainer/Button_Level10/hbox"]
+margin_bottom = 25.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer/GridContainer/Button_Level10/hbox"]
+margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="silver" type="Sprite" parent="CenterContainer/GridContainer/Button_Level10/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 65, 3, 63, 60 )
+
+[node name="gold" type="Sprite" parent="CenterContainer/GridContainer/Button_Level10/hbox/Control"]
+visible = false
+position = Vector2( 15, 10 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 2, 3, 60, 60 )
+
+[node name="go_back" type="Button" parent="."]
+anchor_top = 0.361513
+anchor_bottom = 0.361513
+margin_left = 392.0
+margin_top = 223.092
+margin_right = 605.0
+margin_bottom = 266.092
+theme = ExtResource( 3 )
+text = "Main Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LevelSelectAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+autoplay = true
+bus = "Music"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 360.0
+margin_top = 56.0
+margin_right = 640.0
+margin_bottom = 93.0
+theme = ExtResource( 3 )
+text = "Select a Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CircleTransition" type="ColorRect" parent="."]
+material = SubResource( 9 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+[connection signal="pressed" from="go_back" to="." method="_on_go_back_pressed"]

@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Mark's Assets/Text Dialog Assets/addons/My RPG Text Dialogue/Dialog/Dialog.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Mark's Assets/Text Dialog Assets/addons/My RPG Text Dialogue/DialogWindow/DialogWindow.gd" type="Script" id=2]
+[ext_resource path="res://Mark's Assets/Text Dialog Assets/addons/My RPG Text Dialogue/DialogWindow theme.tres" type="Theme" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
+[node name="DialogWindow" type="Panel"]
+self_modulate = Color( 1, 1, 1, 0.588235 )
+margin_right = 1024.0
+margin_bottom = 219.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Dialog" parent="." instance=ExtResource( 1 )]
+margin_left = 25.0
+margin_top = 50.0
+margin_right = 1007.0
+margin_bottom = 197.0
+_export_theme = ExtResource( 3 )
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource( 1 )
+margin_left = 10.0
+margin_top = 212.0
+margin_right = 1014.0
+margin_bottom = 215.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="."]
+margin_left = 26.0
+margin_top = 7.0
+margin_right = 95.0
+margin_bottom = 41.0
+theme = ExtResource( 3 )
+text = "Mark"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Subject" type="Label" parent="."]
+margin_left = 865.878
+margin_top = 5.0
+margin_right = 1010.88
+margin_bottom = 39.0
+theme = ExtResource( 3 )
+text = "A Developer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+margin_left = 23.3236
+margin_top = 42.7573
+margin_right = 148.324
+margin_bottom = 207.757
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="dialog_ended" from="Dialog" to="." method="_on_Dialog_dialog_ended"]
+[connection signal="dialog_started" from="Dialog" to="." method="_on_Dialog_dialog_started"]
+[connection signal="textflow_completed" from="Dialog" to="." method="_on_Dialog_textflow_completed"]
+[connection signal="textflow_started" from="Dialog" to="." method="_on_Dialog_textflow_started"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

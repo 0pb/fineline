@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Mark's Assets/Text Dialog Assets/addons/My RPG Text Dialogue/Dialog/Dialog.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Mark's Assets/Text Dialog Assets/addons/My RPG Text Dialogue/BubbleDialog/BubbleDialog.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="BubbleDialog" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_right = 371.0
+margin_bottom = 87.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Dialog" parent="." instance=ExtResource( 1 )]
+margin_right = 371.0
+margin_bottom = 87.0

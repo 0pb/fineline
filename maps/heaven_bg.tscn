@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/background.png" type="Texture" id=1]
+
+[node name="heaven_bg" type="ParallaxBackground"]
+
+[node name="far_bg" type="ParallaxLayer" parent="." groups=[
+"heaven",
+]]
+light_mask = 2
+motion_scale = Vector2( 0.8, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="far_bg"]
+margin_left = -3608.0
+margin_top = -2528.0
+margin_right = 4320.0
+margin_bottom = 3240.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="far_bg"]
+position = Vector2( 504, -168 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 190, 140, 240, 140 )
+
+[node name="Sprite2" type="Sprite" parent="far_bg"]
+position = Vector2( -152, -224 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 650, 100, 270, 160 )
+
+[node name="tower_bg1" type="ParallaxLayer" parent="." groups=[
+"heaven",
+]]
+light_mask = 2
+motion_scale = Vector2( 0.8, 1 )
+
+[node name="tower2_bg1" type="ParallaxLayer" parent="." groups=[
+"heaven",
+]]
+light_mask = 2
+motion_scale = Vector2( 0.9, 1 )
+
+[node name="walls" type="ParallaxLayer" parent="." groups=[
+"heaven",
+]]
+light_mask = 2
+motion_scale = Vector2( 0.9, 1 )
+__meta__ = {
+"_edit_lock_": true
+}

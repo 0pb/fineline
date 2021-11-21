@@ -1,0 +1,390 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://body/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://maps/tilemap_heaven.tres" type="TileSet" id=2]
+[ext_resource path="res://body/spike.tscn" type="PackedScene" id=4]
+[ext_resource path="res://body/exit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://maps/tilemap_hell.tres" type="TileSet" id=7]
+[ext_resource path="res://maps/hell_bg.tscn" type="PackedScene" id=8]
+[ext_resource path="res://maps/heaven_bg.tscn" type="PackedScene" id=9]
+[ext_resource path="res://maps/Main.tres.gd" type="Script" id=10]
+[ext_resource path="res://body/beam.tscn" type="PackedScene" id=11]
+[ext_resource path="res://body/laser.tscn" type="PackedScene" id=13]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+string_next_level = "res://maps/map_09.tscn"
+time_to_gold = 8.0
+time_to_silver = 9.0
+
+[node name="heaven" type="TileMap" parent="." groups=["heaven"]]
+tile_set = ExtResource( 2 )
+format = 1
+tile_data = PoolIntArray( -1310720, 2, 0, -1310719, 2, 0, -1310718, 2, 0, -262167, 2, 0, -262166, 2, 0, -262165, 2, 0, -262164, 2, 0, -262163, 2, 0, -262162, 2, 0, -262161, 2, 0, -262160, 2, 0, -262159, 2, 0, -262158, 2, 0, -262157, 2, 0, -262156, 2, 0, -262155, 2, 0, -262154, 2, 0, -262153, 2, 0, -262152, 2, 0, -262151, 2, 0, -262150, 2, 0, -262149, 2, 0, -262148, 2, 0, -262147, 2, 0, -262146, 2, 0, -262145, 2, 0, -327680, 2, 0, -327679, 2, 0, -327678, 2, 0, -327677, 2, 0, -327676, 2, 0, -327675, 2, 0, -327674, 2, 0, -327673, 2, 0, -327672, 2, 0, -327671, 2, 0, -196631, 2, 0, -262135, 2, 0, -131095, 2, 0, -196599, 2, 0, -65559, 2, 0, -131063, 2, 0, -23, 2, 0, -65535, 2, 0, -65532, 2, 0, -65527, 2, 0, 65513, 2, 0, 1, 2, 0, 4, 2, 0, 9, 2, 0, 131049, 2, 0, 131053, 2, 0, 131054, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 65545, 2, 0, 196585, 2, 0, 131081, 2, 0, 262121, 2, 0, 196617, 2, 0, 327657, 2, 0, 327658, 2, 0, 327659, 2, 0, 327660, 2, 0, 327661, 2, 0, 327662, 2, 0, 327663, 2, 0, 327664, 2, 0, 327665, 2, 0, 327666, 2, 0, 327667, 2, 0, 327668, 2, 0, 327669, 2, 0, 327670, 2, 0, 327671, 2, 0, 327672, 2, 0, 327673, 2, 0, 327674, 2, 0, 327675, 2, 0, 327676, 2, 0, 327677, 2, 0, 327678, 2, 0, 327679, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 2, 0, 262150, 2, 0, 262151, 2, 0, 262152, 2, 0, 262153, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="traps" type="Node2D" parent="."]
+
+[node name="spike" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1312, 224 )
+in_hell = true
+
+[node name="spike2" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1248, 224 )
+in_hell = true
+
+[node name="spike3" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1184, 224 )
+in_hell = true
+
+[node name="spike4" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1120, 224 )
+in_hell = true
+
+[node name="spike5" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1056, 224 )
+in_hell = true
+
+[node name="spike6" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -992, 224 )
+in_hell = true
+
+[node name="spike7" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -928, 224 )
+in_hell = true
+
+[node name="spike8" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -864, 224 )
+in_hell = true
+
+[node name="spike9" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -800, 224 )
+in_hell = true
+
+[node name="spike10" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -736, 224 )
+in_hell = true
+
+[node name="spike11" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -672, 224 )
+in_hell = true
+
+[node name="spike12" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -608, 224 )
+in_hell = true
+
+[node name="spike13" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -544, 224 )
+in_hell = true
+
+[node name="spike14" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -480, 224 )
+in_hell = true
+
+[node name="spike15" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -416, 224 )
+in_hell = true
+
+[node name="spike16" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -352, 224 )
+in_hell = true
+
+[node name="spike17" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -288, 224 )
+in_hell = true
+
+[node name="spike18" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -224, 224 )
+in_hell = true
+
+[node name="spike19" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -160, 224 )
+in_hell = true
+
+[node name="spike20" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -96, 224 )
+in_hell = true
+
+[node name="spike21" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -32, 224 )
+in_hell = true
+
+[node name="spike22" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 32, 224 )
+in_hell = true
+
+[node name="spike23" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 96, 224 )
+in_hell = true
+
+[node name="spike24" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 160, 224 )
+in_hell = true
+
+[node name="spike25" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 224, 224 )
+in_hell = true
+
+[node name="spike26" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 288, 224 )
+in_hell = true
+
+[node name="spike27" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 352, 224 )
+in_hell = true
+
+[node name="spike28" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 416, 224 )
+in_hell = true
+
+[node name="spike29" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 480, 224 )
+in_hell = true
+
+[node name="spike30" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1312, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike31" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1248, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike32" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1184, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike33" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1120, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike34" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -1056, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike35" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -992, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike36" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -928, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike37" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -864, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike38" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -800, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike39" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -736, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike40" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -672, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike41" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -608, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike42" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -544, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike43" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -480, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike44" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -416, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike45" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -352, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike46" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -288, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike47" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -224, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike48" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -160, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike49" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -96, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike50" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( -32, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike51" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 32, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike52" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 96, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike53" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 160, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike54" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 224, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike55" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 288, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike56" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 352, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike57" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 416, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="spike58" parent="traps" instance=ExtResource( 4 )]
+position = Vector2( 480, -224 )
+rotation = 3.14159
+in_hell = true
+
+[node name="traps2" type="Node2D" parent="."]
+
+[node name="spike" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( -1376, -160 )
+rotation = 1.5708
+in_hell = true
+
+[node name="spike2" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( -1376, -96 )
+rotation = 1.5708
+in_hell = true
+
+[node name="spike3" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( -1376, -32 )
+rotation = 1.5708
+in_hell = true
+
+[node name="spike4" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( -1376, 32 )
+rotation = 1.5708
+in_hell = true
+
+[node name="spike5" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( -1376, 96 )
+rotation = 1.5708
+in_hell = true
+
+[node name="spike6" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( -1376, 160 )
+rotation = 1.5708
+in_hell = true
+
+[node name="spike7" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( 552, -152 )
+rotation = 4.71239
+in_hell = true
+
+[node name="spike8" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( 552, -88 )
+rotation = 4.71239
+in_hell = true
+
+[node name="spike9" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( 552, -24 )
+rotation = 4.71239
+in_hell = true
+
+[node name="spike10" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( 552, 40 )
+rotation = 4.71239
+in_hell = true
+
+[node name="spike11" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( 552, 104 )
+rotation = 4.71239
+in_hell = true
+
+[node name="spike12" parent="traps2" instance=ExtResource( 4 )]
+position = Vector2( 552, 168 )
+rotation = 4.71239
+in_hell = true
+
+[node name="hell" type="TileMap" parent="." groups=["hell"]]
+tile_set = ExtResource( 7 )
+format = 1
+tile_data = PoolIntArray( -1310720, 2, 0, -1310719, 2, 0, -1310718, 2, 0, -262167, 2, 0, -262166, 2, 0, -262165, 2, 0, -262164, 2, 0, -262163, 2, 0, -262162, 2, 0, -262161, 2, 0, -262160, 2, 0, -262159, 2, 0, -262158, 2, 0, -262157, 2, 0, -262156, 2, 0, -262155, 2, 0, -262154, 2, 0, -262153, 2, 0, -262152, 2, 0, -262151, 2, 0, -262150, 2, 0, -262149, 2, 0, -262148, 2, 0, -262147, 2, 0, -262146, 2, 0, -262145, 2, 0, -327680, 2, 0, -327679, 2, 0, -327678, 2, 0, -327677, 2, 0, -327676, 2, 0, -327675, 2, 0, -327674, 2, 0, -327673, 2, 0, -327672, 2, 0, -327671, 2, 0, -196631, 2, 0, -262135, 2, 0, -131095, 2, 0, -196599, 2, 0, -65559, 2, 0, -131063, 2, 0, -23, 2, 0, -65535, 2, 0, -65532, 2, 0, -65527, 2, 0, 65513, 2, 0, 1, 2, 0, 4, 2, 0, 9, 2, 0, 131049, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 2, 0, 65540, 2, 0, 65545, 2, 0, 196585, 2, 0, 131081, 2, 0, 262121, 2, 0, 196617, 2, 0, 327657, 2, 0, 327658, 2, 0, 327659, 2, 0, 327660, 2, 0, 327661, 2, 0, 327662, 2, 0, 327663, 2, 0, 327664, 2, 0, 327665, 2, 0, 327666, 2, 0, 327667, 2, 0, 327668, 2, 0, 327669, 2, 0, 327670, 2, 0, 327671, 2, 0, 327672, 2, 0, 327673, 2, 0, 327674, 2, 0, 327675, 2, 0, 327676, 2, 0, 327677, 2, 0, 327678, 2, 0, 327679, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 2, 0, 262150, 2, 0, 262151, 2, 0, 262152, 2, 0, 262153, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1152, 24 )
+
+[node name="exit" parent="." instance=ExtResource( 5 )]
+position = Vector2( 192, 0 )
+true_if_activated = true
+
+[node name="heaven_bg" parent="." instance=ExtResource( 9 )]
+
+[node name="hell_bg" parent="." instance=ExtResource( 8 )]
+
+[node name="laser" parent="." instance=ExtResource( 13 )]
+position = Vector2( -576, 64 )
+rotation = -2.41329
+rotation_value = 1.0
+
+[node name="beam" parent="." instance=ExtResource( 11 )]
+position = Vector2( -936, 3.8147e-06 )
+scale = Vector2( 12.8441, 8.06818 )
+new_gravity = -2
+in_heaven = true
+
+[node name="beam3" parent="." instance=ExtResource( 11 )]
+position = Vector2( -104, 0 )
+scale = Vector2( 11.3975, 8.32928 )
+new_gravity = -2
+in_heaven = true

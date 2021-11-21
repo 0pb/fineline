@@ -1,0 +1,277 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/medals.png" type="Texture" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow2.tres" type="Theme" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+
+onready var display_text = get_node(\"CanvasLayer/Label\")
+onready var time_gold = get_node(\"gold\")
+onready var time_silver = get_node(\"silver\")
+onready var path_retry = get_node(\"CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/HBoxContainer/retry\")
+onready var path_next = get_node(\"CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/HBoxContainer/next\")
+    
+    
+export var time_to_gold = 10.0
+export var time_to_silver = 20.0
+
+
+var time_start = 0
+var time_elapsed = 0
+var true_if_counting = true
+var minutes
+var seconds
+var miliseconds
+var string_to_pass = \"\"
+
+
+# 8.5
+func _ready():
+    path_retry.connect(\"pressed\", get_parent(), \"_on_end_retry\")
+    path_next.connect(\"pressed\", get_parent(), \"_on_end_next\")
+    
+    time_gold.wait_time = time_to_gold
+    time_gold.start()
+    time_silver.wait_time = time_to_silver
+    time_silver.start()
+
+    time_start = OS.get_ticks_msec()
+
+
+func _physics_process(delta):
+    # pause the time once the end is reached
+    if true_if_counting:
+        time_elapsed = OS.get_ticks_msec() - time_start
+
+    minutes = int(time_elapsed / 1000.0) / 60
+    seconds = int(time_elapsed / 1000.0) % 60
+    miliseconds = int(time_elapsed) % 1000
+    
+    string_to_pass = str(seconds) + 's :' + str(miliseconds)
+    if minutes:
+        string_to_pass = str(minutes) + 'm ' + string_to_pass
+
+    display_text.text = string_to_pass
+
+
+func on_exit():
+    var popup_panel = get_node(\"CanvasLayer/popup/CenterContainer/PopupPanel\")
+    popup_panel.get_node('CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/time').text = str(minutes) + 'm ' + str(seconds) + 's :' + str(miliseconds)
+    popup_panel.popup_centered()
+
+    var true_if_gold = false
+    var true_if_silver = false
+    if not time_gold.is_stopped():
+        true_if_gold = true
+        popup_panel.get_node('CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Control/gold').visible = true
+    if not time_silver.is_stopped():
+        true_if_silver = true
+        popup_panel.get_node('CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Control/silver').visible = true
+    true_if_counting = false
+    
+    data_time.dict_timing_medal[get_tree().current_scene.filename] = {
+        'gold' : true_if_gold
+        ,'silver' : true_if_silver
+        , 'time' : string_to_pass
+    }
+
+    return [minutes, seconds, miliseconds]
+    
+"
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.647059, 0.647059, 0.647059, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.352941, 0.352941, 0.352941, 1 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0.352941, 0.352941, 0.352941, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_size = 5
+
+[node name="timer" type="Control"]
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gold" type="Timer" parent="."]
+process_mode = 0
+wait_time = 8.5
+one_shot = true
+
+[node name="silver" type="Timer" parent="."]
+process_mode = 0
+wait_time = 10.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+modulate = Color( 1, 1, 1, 0.545098 )
+anchor_left = 0.813
+anchor_right = 0.813
+margin_left = 15.488
+margin_top = 16.0
+margin_right = 127.488
+margin_bottom = 48.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchor_left = 0.813
+anchor_right = 0.813
+margin_left = 15.488
+margin_top = 16.0
+margin_right = 127.488
+margin_bottom = 48.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "aaaaaaaa"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="popup" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PopupPanel" type="PopupPanel" parent="CanvasLayer/popup/CenterContainer"]
+margin_left = 361.0
+margin_top = 219.0
+margin_right = 663.0
+margin_bottom = 380.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/popup/CenterContainer/PopupPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer"]
+margin_right = 282.0
+margin_bottom = 141.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer"]
+margin_right = 282.0
+margin_bottom = 78.0
+
+[node name="Label" type="Label" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_right = 282.0
+margin_bottom = 37.0
+text = "Your score : "
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 41.0
+margin_right = 282.0
+margin_bottom = 78.0
+
+[node name="time" type="Label" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 139.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "0m10s"
+align = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 143.0
+margin_right = 282.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="silver" type="Sprite" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Control"]
+visible = false
+position = Vector2( 20, 18 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 73, 9, 46, 46 )
+
+[node name="gold" type="Sprite" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Control"]
+visible = false
+position = Vector2( 20, 18 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 9, 9, 46, 46 )
+
+[node name="Label" type="Label" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/Control"]
+margin_right = 40.0
+margin_bottom = 37.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer"]
+margin_top = 98.0
+margin_right = 282.0
+margin_bottom = 141.0
+custom_constants/separation = 40
+
+[node name="retry" type="Button" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_right = 134.0
+margin_bottom = 43.0
+text = "Retry"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="next" type="Button" parent="CanvasLayer/popup/CenterContainer/PopupPanel/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 174.0
+margin_right = 282.0
+margin_bottom = 43.0
+text = "Next"

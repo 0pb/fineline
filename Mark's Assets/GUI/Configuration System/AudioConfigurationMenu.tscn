@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Mark's Assets/GUI/Configuration System/AudioConfigurationMenu.gd" type="Script" id=1]
+[ext_resource path="res://Mark's Assets/GUI/Configuration System/AudioVolumePanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Mark's Assets/GUI/Fonts/a-aha-wow/AahaWow1.tres" type="Theme" id=3]
+
+[node name="AudioConfigurationMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_right = 265.0
+margin_bottom = 280.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="Panel"]
+margin_left = 18.0
+margin_top = 7.0
+margin_right = 247.0
+margin_bottom = 32.0
+theme = ExtResource( 3 )
+text = "Audio Properties"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VolumePanel" parent="Panel" instance=ExtResource( 2 )]
+margin_top = 40.0
+margin_bottom = 115.0
+
+[node name="VolumePanel2" parent="Panel" instance=ExtResource( 2 )]
+margin_top = 120.0
+margin_bottom = 195.0
+volume_type = "Sound"
+
+[node name="VolumePanel3" parent="Panel" instance=ExtResource( 2 )]
+margin_top = 200.0
+margin_bottom = 275.0
+volume_type = "Music"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[connection signal="value_changed" from="Panel/VolumePanel3/HSlider" to="." method="_on_HSlider_value_changed"]
+
+[editable path="Panel/VolumePanel"]
+
+[editable path="Panel/VolumePanel2"]
+
+[editable path="Panel/VolumePanel3"]

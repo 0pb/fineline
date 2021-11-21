@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://body/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://maps/tilemap_heaven.tres" type="TileSet" id=2]
+[ext_resource path="res://body/crate.tscn" type="PackedScene" id=3]
+[ext_resource path="res://body/exit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://maps/tilemap_hell.tres" type="TileSet" id=7]
+[ext_resource path="res://maps/hell_bg.tscn" type="PackedScene" id=8]
+[ext_resource path="res://maps/heaven_bg.tscn" type="PackedScene" id=9]
+[ext_resource path="res://maps/Main.tres.gd" type="Script" id=10]
+[ext_resource path="res://body/beam.tscn" type="PackedScene" id=11]
+[ext_resource path="res://body/laser.tscn" type="PackedScene" id=13]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+string_next_level = "res://maps/map_07.tscn"
+time_to_gold = 17.5
+time_to_silver = 19.0
+
+[node name="heaven" type="TileMap" parent="." groups=["heaven"]]
+tile_set = ExtResource( 2 )
+format = 1
+tile_data = PoolIntArray( -1310720, 2, 0, -1310719, 2, 0, -1310718, 2, 0, -262135, 2, 0, -131094, 2, 0, -196599, 2, 0, -65558, 2, 0, -65557, 2, 0, -65556, 2, 0, -65555, 2, 0, -65554, 2, 0, -65553, 2, 0, -65550, 2, 0, -65549, 2, 0, -65546, 2, 0, -131063, 2, 0, -22, 2, 0, -10, 2, 0, -65527, 2, 0, 65514, 2, 0, 65526, 2, 0, 65527, 2, 0, 65528, 2, 0, 65529, 2, 0, 65530, 2, 0, 65531, 2, 0, 65532, 2, 0, 65533, 2, 0, 65534, 2, 0, 65535, 2, 0, 9, 2, 0, 131050, 2, 0, 131062, 2, 0, 131071, 2, 0, 65545, 2, 0, 196586, 2, 0, 196587, 2, 0, 196588, 2, 0, 196589, 2, 0, 196590, 2, 0, 196591, 2, 0, 196592, 2, 0, 196593, 2, 0, 196594, 2, 0, 196595, 2, 0, 196596, 2, 0, 196597, 2, 0, 196598, 2, 0, 196607, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 262143, 2, 0, 196611, 2, 0, 327679, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hell" type="TileMap" parent="." groups=["hell"]]
+tile_set = ExtResource( 7 )
+format = 1
+tile_data = PoolIntArray( -1310720, 2, 0, -1310719, 2, 0, -1310718, 2, 0, -262166, 2, 0, -196630, 2, 0, -262135, 2, 0, -131094, 2, 0, -196599, 2, 0, -65558, 2, 0, -65557, 2, 0, -65556, 2, 0, -65555, 2, 0, -65554, 2, 0, -65553, 2, 0, -65552, 2, 0, -65551, 2, 0, -65550, 2, 0, -65549, 2, 0, -65548, 2, 0, -65547, 2, 0, -65546, 2, 0, -65545, 2, 0, -65544, 2, 0, -131063, 2, 0, -22, 2, 0, -10, 1, 0, -65527, 2, 0, 65514, 2, 0, 65526, 2, 0, 65527, 2, 0, 65528, 2, 0, 65529, 2, 0, 65530, 2, 0, 65531, 2, 0, 65532, 2, 0, 65533, 2, 0, 65534, 2, 0, 65535, 2, 0, 9, 2, 0, 131050, 2, 0, 131062, 2, 0, 131071, 2, 0, 65545, 2, 0, 196586, 2, 0, 196587, 2, 0, 196588, 2, 0, 196589, 2, 0, 196590, 2, 0, 196591, 2, 0, 196592, 2, 0, 196593, 2, 0, 196594, 2, 0, 196595, 2, 0, 196596, 2, 0, 196597, 2, 0, 196598, 2, 0, 196607, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 0, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 262143, 2, 0, 196611, 2, 0, 327679, 2, 0, 262144, 2, 0, 262145, 2, 0, 262146, 2, 0, 262147, 2, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1288, 68 )
+
+[node name="crate" parent="." instance=ExtResource( 3 )]
+position = Vector2( -832, 68 )
+
+[node name="exit" parent="." instance=ExtResource( 5 )]
+position = Vector2( 478, 96 )
+true_if_activated = true
+
+[node name="heaven_bg" parent="." instance=ExtResource( 9 )]
+
+[node name="hell_bg" parent="." instance=ExtResource( 8 )]
+
+[node name="laser" parent="." instance=ExtResource( 13 )]
+position = Vector2( -1336, -32 )
+
+[node name="laser4" parent="." instance=ExtResource( 13 )]
+position = Vector2( -1338, -168 )
+
+[node name="laser3" parent="." instance=ExtResource( 13 )]
+position = Vector2( 34, 248 )
+rotation = -1.57079
+
+[node name="beam" parent="." instance=ExtResource( 11 )]
+position = Vector2( -960, 3.8147e-06 )
+scale = Vector2( 1.66053, 3.8289 )
+in_heaven = true
+
+[node name="beam2" parent="." instance=ExtResource( 11 )]
+position = Vector2( -704, 0 )
+scale = Vector2( 1.66053, 3.8289 )
+in_heaven = true
+
+[node name="beam3" parent="." instance=ExtResource( 11 )]
+position = Vector2( -280, -128 )
+scale = Vector2( 4.85938, 4.15011 )
+in_heaven = true

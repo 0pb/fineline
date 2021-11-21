@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/white_rect.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends StaticBody2D
+
+
+onready var node_collision = get_node(\"CollisionShape2D\")
+
+export var in_hell = false
+export var in_heaven = false
+
+
+var color_of_close
+func _ready():
+    color_of_close = $close.modulate
+    if in_hell:
+        add_to_group(\"hell\")
+    if in_heaven:
+        add_to_group(\"heaven\")
+
+export var duration = 0.3
+func activate():
+    node_collision.set_deferred(\"disabled\", true)
+    $open.visible = true
+    $tween.interpolate_property($close, \"modulate:a\", color_of_close.a, 0, duration, 1, Tween.EASE_IN, 0)
+    $tween.interpolate_property($close, \"scale:y\", 1, 0, duration, 1, Tween.EASE_IN, 0)
+    $CPUParticles2D.emitting = false
+    $tween.start()
+#    $close.visible = false
+
+
+func deactivate():
+    node_collision.set_deferred(\"disabled\", false)
+    $open.visible = false
+    $tween.interpolate_property($close, \"modulate:a\", 0, color_of_close.a, duration, 1, Tween.EASE_IN, 0)
+    $tween.interpolate_property($close, \"scale:y\", 0, 1, duration, 1, Tween.EASE_IN, 0)
+    $tween.start()
+    $CPUParticles2D.emitting = true
+#    $close.visible = true
+
+
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 24, 32 )
+
+[node name="door" type="StaticBody2D"]
+script = SubResource( 3 )
+
+[node name="open" type="Sprite" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.278431 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="close" type="Node2D" parent="."]
+modulate = Color( 0, 1, 0, 1 )
+
+[node name="close" type="Sprite" parent="close"]
+modulate = Color( 1, 1, 1, 0.301961 )
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 64, 64 )
+
+[node name="close2" type="Sprite" parent="close"]
+position = Vector2( 28, 0 )
+scale = Vector2( 0.125, 1 )
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 64, 64 )
+
+[node name="close3" type="Sprite" parent="close"]
+position = Vector2( -28, 0 )
+scale = Vector2( 0.125, 1 )
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 64, 64 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emission_shape = 2
+emission_rect_extents = Vector2( 32, 32 )
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 3.0
+angular_velocity = 25.49
+color = Color( 0.101961, 1, 0, 1 )
+
+[node name="tween" type="Tween" parent="."]
